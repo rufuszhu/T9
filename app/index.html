@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="game">
+<html lang="en" ng-app="T3">
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -18,13 +18,11 @@
 </head>
 <body ng-controller="gameController as gameCtrl">
 
-	<span ng-repeat="cells in gameCtrl.board">
-		<span ng-repeat="cell in cells">	
-		<button>{{cell.position}}</button>
-		</span><br>
+	<span ng-repeat="cell in gameCtrl.board">
+			
+            <button ng-click="gameCtrl.setCell(cell)" >{{cell.ownBy}}</button>
+		
 	</span>
-
-  <div>Angular seed app: v<span app-version></span></div>
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
