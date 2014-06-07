@@ -2,45 +2,40 @@
 
 /* Controllers */
 
-var app = angular.module('T3', []);  
+var app = angular.module('T9', []);
+
 app.controller('gameController', function(){ 
-	this.board = cells;
-        this.turn_1 = true;
+	this.board = board;
+	this.turn_1=true;
         
-        this.isOccupy = function(cell){
-            return cell.ownBy.length;
-        };
-        
-        this.setCell = function(cell){
-            
-            if(!this.isOccupy(cell))
-            {    
-                if(this.turn_1)
-                {
-                    cell.ownBy="X";
-                    this.turn_1=!this.turn_1;
-                }
-                else
-                {
-                    cell.ownBy="O";
-                    this.turn_1=!this.turn_1;
-                }
+    this.isOccupy = function(cell){
+        if (cell.ownBy===0)
+			{return false;}
+		else
+			{return true;}
+    };
+
+    this.cellOnClick = function(cell){
+		//Setting ownership
+		if (this.isOccupy(cell)){
+			alert("This is occupied!");
+		}else{
+            if(this.turn_1){
+                cell.Symbol="X";
+				cell.ownBy="1";
+                this.turn_1=false;
+            }else{
+                cell.Symbol="O";
+				cell.ownBy="-1";
+                this.turn_1=true;
             }
-            var result = this.checkWin();
-            console.log(result);
-            if("X"==="X"==="X"==="X")
-            console.log("asfsdfsdf");
-            if(result === 1)
-                alert("winner is player 1!");
-            else if(result === 2)
-                alert("winner is player 2!");
-        };
+		}
+		
+		
+	};
         
-        this.checkWin = function(){
-            var cells = this.board;
-            console.log(cells[0].ownBy);
-            console.log(cells[1].ownBy);
-            console.log(cells[2].ownBy);
+	this.checkWin = function(unit){
+		var cells = this.board;
             //check rows
             for (var i = 0; i < 3; i++) { 
                 if( cells[i].ownBy === cells[i+1].ownBy === cells[i+2].ownBy === "X" )
@@ -67,16 +62,28 @@ app.controller('gameController', function(){
 });
 
 
-var cells = [
-{position:"1", ownBy:""},
-{position:"2", ownBy:""},
-{position:"3", ownBy:""},
+var pad_9 = [
+[{position:"1", ownBy:0, Symbol:"E"},
+{position:"2", ownBy:0, Symbol:"E"},
+{position:"3", ownBy:0, Symbol:"E"}
+],
+[{position:"4", ownBy:0, Symbol:"E"},
+{position:"5", ownBy:0, Symbol:"E"},
+{position:"6", ownBy:0, Symbol:"E"}
+],
+[{position:"7", ownBy:0, Symbol:"E"},
+{position:"8", ownBy:0, Symbol:"E"},
+{position:"9", ownBy:0, Symbol:"E"}
+]];
 
-{position:"4", ownBy:""},
-{position:"5", ownBy:""},
-{position:"6", ownBy:""},
+var board_r = [];
+var board = [];
 
-{position:"7", ownBy:""},
-{position:"8", ownBy:""},
-{position:"9", ownBy:""},
-];
+for (var i=0; i<3; i++) {
+	board_r.push(angular.copy(pad));
+}
+
+for (var i=0; i<3; i++) {
+	board.push(angular.copy(board_r));
+}
+
