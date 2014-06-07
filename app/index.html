@@ -19,7 +19,7 @@
 			<td ng-repeat="pad in board_r">
 				<span ng-repeat="row in pad">
 					<span ng-repeat="cell in row">
-						<button ng-click="gameCtrl.cellOnClick(cell)" >{{cell.Symbol}}</button>
+						<button ng-click="gameCtrl.cellOnClick(pad, cell.row, cell.col)" >{{cell.Symbol}}</button>
 					</span><br>
 				</span>
 			</td>
