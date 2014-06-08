@@ -8,4 +8,18 @@ button
 {
 	width:30px;
 	height:30px;
+	//color: red;
+	//-webkit-animation: changeColor 0.2s; /* Chrome, Safari, Opera */
+	-webkit-transition: background 0.1s, color 0.1s, -webkit-transform 0.1s; /* For Safari 3.1 to 6.0 */
+    transition: background 0.1s, color 0.1s, transform 0.1s;
+}
+
+button:hover
+{
+	background: red;
+	color: white;
+	-ms-transform:scale(1.3); /* IE 9 */
+    -moz-transform:scale(1.3); /* Firefox */
+    -webkit-transform:scale(1.3); /* Safari and Chrome */
+    -o-transform:scale(1.3); /* Opera */
 }
