@@ -16,7 +16,7 @@ app.controller('gameController', function(){
 			{return true;}
     };
 
-    this.cellOnClick = function(pad, row, col){
+    this.cellOnClick = function(pad, row, col, row_p, col_p){
 		//Setting ownership
 		if (this.isOccupy(pad[row][col])){
 			alert("This is occupied!");
@@ -32,10 +32,10 @@ app.controller('gameController', function(){
             }
 		}
 		
-		var result = this.checkWin(pad);
-		//var localResult = this.checkWin(pad);
-		//bigPad[][].ownBy = localresult;
-		//var result = this.checkWin(bigPad);
+		//var result = this.checkWin(pad);
+		var localResult = this.checkWin(pad);
+		this.bigPad[row_p][col_p].ownBy = localResult;
+		var result = this.checkWin(this.bigPad);
 		if (result===1)
 		{alert("Player 1 wins!");}
 		else if (result===-1)
