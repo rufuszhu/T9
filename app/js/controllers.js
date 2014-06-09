@@ -29,6 +29,13 @@ app.controller('gameController', function(){
 		}
 	};
 	
+	this.playable = function(pad){
+		var padActive = pad[0][0].padActive;
+		return padActive;
+	};
+	//alert(pad[0][1].col);
+	//board[0][0][0][0].row
+	
     this.cellOnClick = function(pad, row, col, row_p, col_p){
 		//Setting ownership
 		if (this.isOccupy(pad[row][col])){
@@ -99,19 +106,13 @@ app.controller('gameController', function(){
 		return 0;
 	}
 	
-	this.playable = function(pad){
-		var padActive = pad[0][0].padActive;
-		var cellCol = pad.col;
-		return padActive;
-	};
-	//alert(pad[0][1].col);
-	//board[0][0][0][0].row
+	
 });
 
 
 var pad = [
 	[
-		{row:"0", col:"0", ownBy:0, Symbol:"E", padActive:1},
+		{row:"0", col:"0", ownBy:0, Symbol:"E", padActive:1},  // we actually only need the padActive attribute for this array element to determine the activeness of a board 
 		{row:"0", col:"1", ownBy:0, Symbol:"E", padActive:1},
 		{row:"0", col:"2", ownBy:0, Symbol:"E", padActive:1}
 	],
