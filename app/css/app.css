@@ -54,3 +54,19 @@ border: 2px solid #48abe1;
 .page-container table .p2{
 border: 2px solid red;
 }
+
+.page-container .playable{
+ -webkit-transform: scale(1);
+ -moz-transform: scale(1);
+}
+
+.page-container .notplayable {
+ -webkit-transform: scale(0.8);
+ -moz-transform: scale(0.8);
+ opacity: 0.5;
+}
+/*.page-container .notplayable:hover {
+ -webkit-transform: scale(1);
+ -moz-transform: scale(1);
+ opacity: 1;
+}*/

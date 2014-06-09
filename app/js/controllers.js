@@ -16,6 +16,19 @@ app.controller('gameController', function(){
 			{return true;}
     };
 
+	this.changePadPlayable = function(pad, row, col){
+		alert("row: " + row + ";  col: " + col);
+		//board[row][col][0][0].padActive = 1;
+		for(var boardRow=0; boardRow<3; boardRow++){
+			for(var boardCol=0; boardCol<3; boardCol++){
+				if (boardRow== row && boardCol==col)
+					board[boardRow][boardCol][0][0].padActive = 1;
+				else 
+					board[boardRow][boardCol][0][0].padActive = 0;
+			}
+		}
+	};
+	
     this.cellOnClick = function(pad, row, col, row_p, col_p){
 		//Setting ownership
 		if (this.isOccupy(pad[row][col])){
@@ -30,6 +43,7 @@ app.controller('gameController', function(){
 				pad[row][col].ownBy=-1;
                 this.turn_1=true;
             }
+			this.changePadPlayable(pad, row, col);
 		}
 		
 		//var result = this.checkWin(pad);
@@ -84,25 +98,32 @@ app.controller('gameController', function(){
 		
 		return 0;
 	}
-
+	
+	this.playable = function(pad){
+		var padActive = pad[0][0].padActive;
+		var cellCol = pad.col;
+		return padActive;
+	};
+	//alert(pad[0][1].col);
+	//board[0][0][0][0].row
 });
 
 
 var pad = [
 	[
-		{row:"0", col:"0", ownBy:0, Symbol:"E"},
-		{row:"0", col:"1", ownBy:0, Symbol:"E"},
-		{row:"0", col:"2", ownBy:0, Symbol:"E"}
+		{row:"0", col:"0", ownBy:0, Symbol:"E", padActive:1},
+		{row:"0", col:"1", ownBy:0, Symbol:"E", padActive:1},
+		{row:"0", col:"2", ownBy:0, Symbol:"E", padActive:1}
 	],
 	[
-		{row:"1", col:"0", ownBy:0, Symbol:"E"},
-		{row:"1", col:"1", ownBy:0, Symbol:"E"},
-		{row:"1", col:"2", ownBy:0, Symbol:"E"}
+		{row:"1", col:"0", ownBy:0, Symbol:"E", padActive:1},
+		{row:"1", col:"1", ownBy:0, Symbol:"E", padActive:1},
+		{row:"1", col:"2", ownBy:0, Symbol:"E", padActive:1}
 	],
 	[
-		{row:"2", col:"0", ownBy:0, Symbol:"E"},
-		{row:"2", col:"1", ownBy:0, Symbol:"E"},
-		{row:"2", col:"2", ownBy:0, Symbol:"E"}
+		{row:"2", col:"0", ownBy:0, Symbol:"E", padActive:1},
+		{row:"2", col:"1", ownBy:0, Symbol:"E", padActive:1},
+		{row:"2", col:"2", ownBy:0, Symbol:"E", padActive:1}
 	]
 ];
 /*
