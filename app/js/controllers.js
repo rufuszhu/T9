@@ -135,3 +135,12 @@ for (var i=0; i<3; i++) {
 	board.push(angular.copy(board_r));
 }
 
+
+//$(document).ready(function() {
+//    $('.div-cell').mouseenter(function() {
+//        $('.div-cell').addClass("div-cell-hover");
+//    });
+//    $('.div-cell').mouseleave(function() {
+//        $('.div-cell').removeClass("div-cell-hover");
+//    });
+//});
