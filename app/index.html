@@ -20,20 +20,19 @@
 	<table ng-controller="gameController as gameCtrl">
 		<tr ng-repeat="board_r in gameCtrl.board">
 			<td ng-repeat="pad in board_r" class="td-pad">
-                            <table>
-				<tr ng-repeat="row in pad">
-					<td ng-repeat="cell in row" class="td-cell">
-                                             
-						<div class="div-cell" 
-                                                     ng-class="{dark:hover && cell.ownBy===0, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
-                                                     ng-mouseenter="hover = true" 
-                                                     ng-mouseleave="hover = false"
-                                                     ng-click="gameCtrl.cellOnClick(pad, cell.row, cell.col, 
-                                                                 $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
-                                                </div>
-                                        </td>
-				</tr>
-                            </table>
+                <table ng-class="{p1: gameCtrl.checkWin(pad)===1, p2: gameCtrl.checkWin(pad)===-1 }">
+					<tr ng-repeat="row in pad">
+						<td ng-repeat="cell in row" class="td-cell">
+							<div class="div-cell" 
+                                ng-class="{dark:hover && cell.ownBy===0, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
+                                ng-mouseenter="hover = true" 
+                                ng-mouseleave="hover = false"
+                                ng-click="gameCtrl.cellOnClick(pad, cell.row, cell.col, 
+                                          $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
+							</div>
+						</td>
+					</tr>
+                </table>
 			</td>
 		</tr>
 	</table>

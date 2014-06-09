@@ -1,1 +1,56 @@
-.page-container{width:70%;margin:auto}.page-container table{margin:auto}.page-container .td-pad{padding:50px}.page-container .td-cell{padding:2px}.page-container .div-cell{padding-left:5px;padding-right:5px;height:50px;width:50px;background-color:#eaeaea}.page-container .dark{background-color:#363636}.page-container .ownByOne{background-color:#48abe1}.page-container .ownByTwo{background-color:red}
+* {
+//box-sizing: border-box;
+-webkit-transition: all 0.5s ease; 
+-moz-transition: all 0.5s ease;
+-o-transition: all 0.5s ease;
+transition: all 0.5s ease;
+}
+
+.page-container {
+width:70%;
+margin:auto;
+}
+
+.page-container table {
+margin:auto;
+}
+
+.page-container .td-pad {
+padding:50px;
+}
+
+.page-container .td-cell {
+padding:2px;
+}
+
+.page-container .div-cell {
+padding-left:5px;
+padding-right:5px;
+height:50px;
+width:50px;
+background-color:#eaeaea;
+}
+
+.page-container .dark {
+background-color:#363636;
+}
+
+.page-container .ownByOne {
+background-color:#48abe1;
+}
+
+.page-container .ownByTwo {
+background-color:red;
+}
+
+.page-container .td-pad table {
+border: 1px solid #D0D0D0;
+}
+
+.page-container table .p1 {
+border: 2px solid #48abe1;
+}
+
+.page-container table .p2{
+border: 2px solid red;
+}
