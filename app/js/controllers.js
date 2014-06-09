@@ -127,10 +127,12 @@ var board = [
 var board_r = [];
 var board = [];
 
+//determines # of "pads" in one row of (big) board
 for (var i=0; i<3; i++) {
 	board_r.push(angular.copy(pad));
 }
 
+//determines # of  rows our (big) board have. (Board is designed to be a 3x3 m)
 for (var i=0; i<3; i++) {
 	board.push(angular.copy(board_r));
 }
