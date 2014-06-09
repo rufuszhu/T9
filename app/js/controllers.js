@@ -17,8 +17,7 @@ app.controller('gameController', function(){
     };
 
 	this.changePadPlayable = function(pad, row, col){
-		alert("row: " + row + ";  col: " + col);
-		//board[row][col][0][0].padActive = 1;
+		//alert("row: " + row + ";  col: " + col);
 		for(var boardRow=0; boardRow<3; boardRow++){
 			for(var boardCol=0; boardCol<3; boardCol++){
 				if (boardRow== row && boardCol==col)
@@ -37,31 +36,32 @@ app.controller('gameController', function(){
 	//board[0][0][0][0].row
 	
     this.cellOnClick = function(pad, row, col, row_p, col_p){
-		//Setting ownership
-		if (this.isOccupy(pad[row][col])){
-			alert("This is occupied!");
-		}else{
-            if(this.turn_1){
-                pad[row][col].Symbol="X";
-				pad[row][col].ownBy=1;
-                this.turn_1=false;
-            }else{
-                pad[row][col].Symbol="O";
-				pad[row][col].ownBy=-1;
-                this.turn_1=true;
-            }
-			this.changePadPlayable(pad, row, col);
+		if(this.playable(pad)){
+			//Setting ownership
+			if (this.isOccupy(pad[row][col])){
+				alert("This is occupied!");
+			}else{
+				if(this.turn_1){
+					pad[row][col].Symbol="X";
+					pad[row][col].ownBy=1;
+					this.turn_1=false;
+				}else{
+					pad[row][col].Symbol="O";
+					pad[row][col].ownBy=-1;
+					this.turn_1=true;
+				}
+				this.changePadPlayable(pad, row, col);
+			}
+			
+			//var result = this.checkWin(pad);
+			var localResult = this.checkWin(pad);
+			this.bigPad[row_p][col_p].ownBy = localResult;
+			var result = this.checkWin(this.bigPad);
+			if (result===1)
+			{alert("Player 1 wins!");}
+			else if (result===-1)
+			{alert("Player 2 wins!");}
 		}
-		
-		//var result = this.checkWin(pad);
-		var localResult = this.checkWin(pad);
-		this.bigPad[row_p][col_p].ownBy = localResult;
-		var result = this.checkWin(this.bigPad);
-		if (result===1)
-		{alert("Player 1 wins!");}
-		else if (result===-1)
-		{alert("Player 2 wins!");}
-		
 	};
         
 	this.checkWin = function(unit){

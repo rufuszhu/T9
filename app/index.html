@@ -25,7 +25,7 @@
 							<tr ng-repeat="row in pad">	
 								<td ng-repeat="cell in row" class="td-cell">
 									<div class="div-cell" 
-										ng-class="{dark:hover && cell.ownBy===0, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
+										ng-class="{dark:hover && cell.ownBy===0 && gameCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
 										ng-mouseenter="hover = true" 
 										ng-mouseleave="hover = false"
 										ng-click="gameCtrl.cellOnClick(pad, cell.row, cell.col, 
