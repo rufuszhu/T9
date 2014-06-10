@@ -2,8 +2,9 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('myApp', [
+angular.module('T9', [
   'ngRoute',
+  'gameController',
   'myApp.filters',
   'myApp.services',
   'myApp.directives',

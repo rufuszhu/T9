@@ -2,12 +2,29 @@
 
 /* Controllers */
 
-var app = angular.module('T9', []);
+var app = angular.module('T9', ['ngRoute']);
+/*
+app.config(function ($routeProvider){
+	$routeProvider
+		.when('/',
+		{
+			controller: 'gameController',
+			templateUrl: 'index.html'
+		})
+		.when('/kb',
+		{
+			controller: 'gameController',
+			templateUrl: 'kb/kbview.html'
+		})
+		.otherwise({redirectTo: '/'});
+		
+});*/
 
 app.controller('gameController', function(){ 
-	this.board = board;
+	this.board  = board;
 	this.bigPad = pad;
-	this.turn_1=true;
+	this.turn_1 = true;
+	this.winnerDeclared = false;
         
     this.isOccupy = function(cell){
         if (cell.ownBy===0)
@@ -15,13 +32,22 @@ app.controller('gameController', function(){
 		else
 			{return true;}
     };
-
+	
+	this.isWineerDeclared = function(){
+		return this.winnerDeclared;
+	}
+	
 	this.changePadPlayable = function(pad, row, col){
 		//alert("row: " + row + ";  col: " + col);
 		for(var boardRow=0; boardRow<3; boardRow++){
 			for(var boardCol=0; boardCol<3; boardCol++){
-				if (boardRow== row && boardCol==col)
+				if (boardRow== row && boardCol==col){
+					if(this.checkPadFull(pad, row, col)===1){
+						this.freeAllPads();
+						return;
+					}
 					board[boardRow][boardCol][0][0].padActive = 1;
+				}
 				else 
 					board[boardRow][boardCol][0][0].padActive = 0;
 			}
@@ -35,8 +61,26 @@ app.controller('gameController', function(){
 	//alert(pad[0][1].col);
 	//board[0][0][0][0].row
 	
+	this.checkPadFull = function(pad, row, col){
+		var cellCount=0;
+		for(var padRow=0; padRow<3; padRow++){
+			for(var padCol=0; padCol<3; padCol++){
+				if (board[row][col][padRow][padCol].ownBy === 0){
+					//alert("pad " + row + ", " + col + "is not full!");
+					return 0;
+				}
+				else{
+					cellCount++;
+				}
+			}
+		}
+		alert("pad " + row + ", " + col + " is full. : " + cellCount);
+		return cellCount==9? 1:0; 
+	};
+	
+	
     this.cellOnClick = function(pad, row, col, row_p, col_p){
-		if(this.playable(pad)){
+		if(this.playable(pad) && !(this.isWineerDeclared())){
 			//Setting ownership
 			if (this.isOccupy(pad[row][col])){
 				alert("This is occupied!");
@@ -57,10 +101,18 @@ app.controller('gameController', function(){
 			var localResult = this.checkWin(pad);
 			this.bigPad[row_p][col_p].ownBy = localResult;
 			var result = this.checkWin(this.bigPad);
-			if (result===1)
-			{alert("Player 1 wins!");}
-			else if (result===-1)
-			{alert("Player 2 wins!");}
+			if (result===1){
+				alert("Player 1 wins!");
+				this.winnerDeclared = true;
+			}
+			else if (result===-1){
+				alert("Player 2 wins!");
+				this.winnerDeclared = true;
+			}
+		} else if (this.playable(pad) && this.isWineerDeclared()){
+			if (!this.isOccupy(pad[row][col])){
+				this.changePadPlayable(pad, row, col);
+			}
 		}
 	};
         
@@ -104,7 +156,7 @@ app.controller('gameController', function(){
 		}
 		
 		return 0;
-	}
+	};
 	
 	this.rematch = function(){
 		if (confirm("Rematch. Are you sure?")){
@@ -119,7 +171,15 @@ app.controller('gameController', function(){
 				}
 			}
 		}
-	}
+	};
+	
+	this.freeAllPads = function(){
+		for(var boardRow=0; boardRow<3; boardRow++){
+			for(var boardCol=0; boardCol<3; boardCol++){			
+				board[boardRow][boardCol][0][0].padActive = 1;
+			}
+		}
+	};
 	
 	
 });
