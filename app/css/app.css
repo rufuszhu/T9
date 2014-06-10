@@ -58,12 +58,26 @@ border: 2px solid red;
 .page-container .playable{
  -webkit-transform: scale(1);
  -moz-transform: scale(1);
+ box-shadow: 0px 0px 15px #98FB98;
+ -webkit-animation: flashbackground 2s infinite ease;
 }
 
 .page-container .notplayable {
  -webkit-transform: scale(0.8);
  -moz-transform: scale(0.8);
  opacity: 0.5;
+}
+
+@-webkit-keyframes flashbackground{
+	0% {
+	}
+	
+	50% {
+		box-shadow: 0px 0px 0px #98FB98;
+	}
+	
+	100%{
+	}
 }
 /*.page-container .notplayable:hover {
  -webkit-transform: scale(1);
