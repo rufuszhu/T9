@@ -106,6 +106,21 @@ app.controller('gameController', function(){
 		return 0;
 	}
 	
+	this.rematch = function(){
+		if (confirm("Rematch. Are you sure?")){
+			for(var boardRow=0; boardRow<3; boardRow++){
+				for(var boardCol=0; boardCol<3; boardCol++){			
+					board[boardRow][boardCol][0][0].padActive = 1;
+					for(var cellRow=0; cellRow<3; cellRow++){
+						for(var cellCol=0; cellCol<3; cellCol++){
+							board[boardRow][boardCol][cellRow][cellCol].ownBy = 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	
 });
 
