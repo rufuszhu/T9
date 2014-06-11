@@ -21,6 +21,16 @@ app.config(function ($routeProvider){
 			controller: 'gameController',
 			templateUrl: 'partials/splash.html'
 		})
+		.when('/online',
+		{
+			controller: '',
+			templateUrl: 'partials/onlinegame.html'
+		})
+		.when('/howto',
+		{
+			controller: '',
+			templateUrl: 'partials/howtoplay.html'
+		})
 		.otherwise({redirectTo: 'partials/splash.html'});
 		
 });
