@@ -3,6 +3,27 @@
 /* Controllers */
 
 var app = angular.module('T9', ['ngRoute']);
+
+app.config(function ($routeProvider){
+	$routeProvider
+		.when('/',
+		{
+			controller: 'gameController',
+			templateUrl: 'partials/splash.html'
+		})
+		.when('/local',
+		{
+			controller: 'gameController',
+			templateUrl: 'partials/localgame.html'
+		})
+		.when('/splash',
+		{
+			controller: 'gameController',
+			templateUrl: 'partials/splash.html'
+		})
+		.otherwise({redirectTo: 'partials/splash.html'});
+		
+});
 /*
 app.config(function ($routeProvider){
 	$routeProvider
