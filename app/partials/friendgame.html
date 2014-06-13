@@ -1,0 +1,31 @@
+ <div class="page-container" ng-controller="friendgameController as friendgameCtrl" disabled="true";>
+		<table>
+			<tr ng-repeat="board_r in friendgameCtrl.tttData.gameboard">
+				<td ng-repeat="pad in board_r" class="td-pad">
+					<div ng-class="{playable: friendgameCtrl.playable(pad)===1, notplayable: friendgameCtrl.playable(pad)===0}">
+						<table ng-class="{p1: friendgameCtrl.checkWin(pad)===1, p2: friendgameCtrl.checkWin(pad)===-1 }">
+							<tr ng-repeat="row in pad">	
+								<td ng-repeat="cell in row" class="td-cell">
+									<div class="div-cell" 
+										ng-class="{dark:hover && cell.ownBy===0 && friendgameCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
+										ng-mouseenter="hover = true" 
+										ng-mouseleave="hover = false"
+										ng-click="friendgameCtrl.cellOnClick(pad, cell.row, cell.col, 
+												  $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div > 
+			<!--<div class="">-->
+				<button class="btn btn-info" ng-click="friendgameCtrl.rematch()" ng-show="true" style="margin-left: 46%;"> Rematch!</button>
+			<!--</div>-->
+		</div>
+		<div>
+			<a href="#/splash">Go Back To Main Page</a>
+		</div>
+    </div>

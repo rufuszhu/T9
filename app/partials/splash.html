@@ -1,15 +1,14 @@
-
- <div class="page-container" disabled="true";>
+ <div class="page-container" ng-controller="splashController as splashCtrl" disabled="true";>
 		<h1>Tic Tac Toe 9!</h1>
-		<table ng-controller="gameController as gameCtrl">
-			<tr ng-repeat="board_r in gameCtrl.board">
+		<table>
+			<tr ng-repeat="board_r in splashCtrl.splashboard">
 				<td ng-repeat="pad in board_r" class="td-pad-splash">
-					<div ng-class="{playable: gameCtrl.playable(pad)===1, notplayable: gameCtrl.playable(pad)===0}">
-						<table ng-class="{p1: gameCtrl.checkWin(pad)===1, p2: gameCtrl.checkWin(pad)===-1 }">
+					<div class="splashplayable">
+						<table>
 							<tr ng-repeat="row in pad">	
 								<td ng-repeat="cell in row" class="td-cell-splash">
 									<div class="div-cell" 
-										ng-class="{dark:hover && cell.ownBy===0 && gameCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
+										ng-class="{dark:hover}"
 										ng-mouseenter="hover = true" 
 										ng-mouseleave="hover = false"
 										>                                                        
@@ -21,9 +20,10 @@
 				</td>
 			</tr>
 		</table>
-		<div ng-controller="gameController as gameCtrl"> 
+		<div > 
 			<div style="">
 				<a href="#/local"><button class="btn btn-info" ng-click="" ng-show="true" style="margin-left: 46%;"> Play Local!</button></a>
+				<a href="#/friend"><button class="btn btn-info" ng-click="" ng-show="true" style="margin-left: 46%;"> Play with a Friend!</button></a>
 				<a href="#/online"><button class="btn btn-info" ng-click="" ng-show="true" style="margin-left: 46%;"> Online Battle!</button></a>
 				<a href="#/howto"><button class="btn btn-info" ng-click="" ng-show="true" style="margin-left: 46%;"> How to Play!</button></a>
 			</div>
