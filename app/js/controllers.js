@@ -53,13 +53,13 @@ app.controller('gameController', function(fbURL, $firebase){
 	this.bigPad = pad;
 	this.turn_1 = true;
 	this.winnerDeclared = false;
-	//this.tttData = $firebase(new Firebase(fbURL));;
+	//$scope.tttData = $firebase(new Firebase(fbURL));;
 	
-    //this.tttData.$add({game1:this.board});
-	//this.tttData.gameboard = this.board;
-	//this.tttData.turn =0; //0=P1, 1=P2;
-	//this.tttData.$save("gameboard");
-	//this.tttData.$save("turn");
+    //$scope.tttData.$add({game1:this.board});
+	//$scope.tttData.gameboard = this.board;
+	//$scope.tttData.turn =0; //0=P1, 1=P2;
+	//$scope.tttData.$save("gameboard");
+	//$scope.tttData.$save("turn");
 	
     this.isOccupy = function(cell){
         if (cell.ownBy===0)
@@ -82,11 +82,11 @@ app.controller('gameController', function(fbURL, $firebase){
 						return;
 					}
 					board[boardRow][boardCol][0][0].padActive = 1;
-					//this.tttData.gameboard[boardRow][boardCol][0][0].padActive=1;
+					//$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive=1;
 				}
 				else 
 					board[boardRow][boardCol][0][0].padActive = 0;
-					//this.tttData.gameboard[boardRow][boardCol][0][0].padActive=0;
+					//$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive=0;
 			}
 		}
 	};
@@ -126,21 +126,21 @@ app.controller('gameController', function(fbURL, $firebase){
 					pad[row][col].Symbol="X";
 					pad[row][col].ownBy=1;
 					this.turn_1=false;
-					//this.tttData.turn =1;
-					//this.tttData.$add({"b": 2});
-					//this.tttData.gameboard[row_p][col_p][row][col].ownBy=1;
+					//$scope.tttData.turn =1;
+					//$scope.tttData.$add({"b": 2});
+					//$scope.tttData.gameboard[row_p][col_p][row][col].ownBy=1;
 					//this.changePadPlayable(pad, row, col);
-					//this.tttData.$save("gameboard");
+					//$scope.tttData.$save("gameboard");
 				}else {
 					pad[row][col].Symbol="O";
 					pad[row][col].ownBy=-1;
 					this.turn_1=true;
-					//this.tttData.turn =0;
-					//this.tttData.$save(game1);
-					//this.tttData.foo = "P2";
-					//this.tttData.gameboard[row_p][col_p][row][col].ownBy=-1;
+					//$scope.tttData.turn =0;
+					//$scope.tttData.$save(game1);
+					//$scope.tttData.foo = "P2";
+					//$scope.tttData.gameboard[row_p][col_p][row][col].ownBy=-1;
 					//this.changePadPlayable(pad, row, col);
-					//this.tttData.$save("gameboard");
+					//$scope.tttData.$save("gameboard");
 					
 				}
 				this.changePadPlayable(pad, row, col);
@@ -219,7 +219,7 @@ app.controller('gameController', function(fbURL, $firebase){
 					}
 				}
 			}
-			//this.tttData.$remove();
+			//$scope.tttData.$remove();
 		}
 	};
 	
@@ -243,14 +243,47 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 	this.bigPad = pad;
 	this.turn_1 = true;
 	this.winnerDeclared = false;
-	this.tttData = $firebase(new Firebase(fbURL));;
+	$scope.tttData = $firebase(new Firebase(fbURL));;
+	$scope.tttData.$bind($scope,"board");
 	
-    //this.tttData.$add({game1:this.board});
-	this.tttData.gameboard = this.board;
-	this.tttData.turn =0; //0=P1, 1=P2;
-	this.tttData.$save("gameboard");
-	this.tttData.$save("turn");
+    //$scope.tttData.$add({game1:this.board});
+	$scope.tttData.gameboard = this.board;
+	$scope.tttData.turn =0; //0=P1, 1=P2;
+	$scope.tttData.winnerDeclared =false;
 	
+	$scope.tttData.$update({winnerIs: ''});
+	$scope.tttData.$save("gameboard");
+	$scope.tttData.$save("turn");
+	$scope.tttData.$save("winnerDeclared");
+	
+	//$scope.isBlack = false;
+	$scope.tttData.$on('change', function(){
+	/*
+	if(!$scope.isBlack)
+		$scope.isBlack = true;
+	else
+		$scope.isBlack = false;
+	*/
+		$scope.updateActivePad();
+		$scope.updateCells();
+		//check dead case OK
+		//check win
+		if ($scope.tttData.winnerIs === 'P1'){
+			alert("From AngularFire: Player 1 is the winner!");
+			$scope.tttData.unbind();
+		}
+		else if ($scope.tttData.winnerIs === 'P2'){
+			alert("From AngularFire: Player 2 is the winner!");
+			$scope.tttData.unbind();
+		}
+		
+		
+	});
+	
+	
+	var checkColor = function(){
+		alert("asdwsd");
+	}
     this.isOccupy = function(cell){
         if (cell.ownBy===0)
 			{return false;}
@@ -259,8 +292,33 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
     };
 	
 	this.isWineerDeclared = function(){
-		return this.winnerDeclared;
+		return $scope.tttData.winnerDeclared;
 	}
+	
+	$scope.updateActivePad = function(){
+		for(var boardRow=0; boardRow<3; boardRow++){
+			for(var boardCol=0; boardCol<3; boardCol++){
+				board[boardRow][boardCol][0][0].padActive = $scope.tttData.gameboard[boardRow][boardCol][0][0].padActive;
+			}
+		}
+	};
+	
+	$scope.updateCells = function(){
+		for(var boardRow=0; boardRow<3; boardRow++){
+			for(var boardCol=0; boardCol<3; boardCol++){			
+
+				for(var cellRow=0; cellRow<3; cellRow++){
+					for(var cellCol=0; cellCol<3; cellCol++){
+						//update cell occupations
+						//if (board[boardRow][boardCol][cellRow][cellCol].ownBy != $scope.tttData.gameboard[boardRow][boardCol][cellRow][cellCol].ownBy){
+							board[boardRow][boardCol][cellRow][cellCol].ownBy = $scope.tttData.gameboard[boardRow][boardCol][cellRow][cellCol].ownBy;
+						//}
+					}
+				}
+			}
+		}
+	};
+	
 	
 	this.changePadPlayable = function(pad, row, col){
 		//alert("row: " + row + ";  col: " + col);
@@ -272,11 +330,14 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 						return;
 					}
 					board[boardRow][boardCol][0][0].padActive = 1;
-					this.tttData.gameboard[boardRow][boardCol][0][0].padActive=1;
+					$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive=1;
+					//$scope.tttData.$save('gameboard');
 				}
-				else 
+				else {
 					board[boardRow][boardCol][0][0].padActive = 0;
-					this.tttData.gameboard[boardRow][boardCol][0][0].padActive=0;
+					$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive=0;
+					//$scope.tttData.$save('gameboard');
+				}	
 			}
 		}
 	};
@@ -292,7 +353,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 		var cellCount=0;
 		for(var padRow=0; padRow<3; padRow++){
 			for(var padCol=0; padCol<3; padCol++){
-				if (board[row][col][padRow][padCol].ownBy === 0){
+				if ($scope.tttData.gameboard[row][col][padRow][padCol].ownBy === 0){
 					//alert("pad " + row + ", " + col + "is not full!");
 					return 0;
 				}
@@ -302,6 +363,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 			}
 		}
 		//alert("pad " + row + ", " + col + " is full. : " + cellCount);
+		//alert(cellCount);
 		return cellCount==9? 1:0; 
 	};
 	
@@ -312,25 +374,27 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 			if (this.isOccupy(pad[row][col])){
 				alert("This is occupied!");
 			}else{
-				if(this.turn_1 && this.tttData.turn === 0){
+				if(this.turn_1 && $scope.tttData.turn === 0){
 					pad[row][col].Symbol="X";
 					pad[row][col].ownBy=1;
 					this.turn_1=false;
-					this.tttData.turn =1;
-					//this.tttData.$add({"b": 2});
-					this.tttData.gameboard[row_p][col_p][row][col].ownBy=1;
+					$scope.tttData.turn =1;
+					$scope.tttData.gameboard[row_p][col_p][row][col].ownBy=1;
 					this.changePadPlayable(pad, row, col);
-					this.tttData.$save("gameboard");
-				}else if (!this.turn_1 && this.tttData.turn === 1){
+					$scope.tttData.$save("gameboard").then(function(){});
+					$scope.tttData.$save("turn");
+					
+					//$scope.tttData.$update({name: 'alex'}).then(function(result){});
+				}else if (!this.turn_1 && $scope.tttData.turn === 1){
 					pad[row][col].Symbol="O";
 					pad[row][col].ownBy=-1;
 					this.turn_1=true;
-					this.tttData.turn =0;
-					//this.tttData.$save(game1);
-					//this.tttData.foo = "P2";
-					this.tttData.gameboard[row_p][col_p][row][col].ownBy=-1;
+					$scope.tttData.turn =0;
+					$scope.tttData.gameboard[row_p][col_p][row][col].ownBy=-1;
 					this.changePadPlayable(pad, row, col);
-					this.tttData.$save("gameboard");
+					$scope.tttData.$save("gameboard").then(function(){});
+					$scope.tttData.$save("turn");
+					
 					
 				}
 				//this.changePadPlayable(pad, row, col);
@@ -341,12 +405,18 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 			this.bigPad[row_p][col_p].ownBy = localResult;
 			var result = this.checkWin(this.bigPad);
 			if (result===1){
-				alert("Player 1 wins!");
+				//alert("Player 1 wins!");
 				this.winnerDeclared = true;
+				//$scope.tttData.winnerDeclared = true;
+				//$scope.tttData.$update({winnerIs: 'P1'});
+				$scope.tttData.$update({winnerDeclared: true, winnerIs: 'P1'});
 			}
 			else if (result===-1){
-				alert("Player 2 wins!");
+				//alert("Player 2 wins!");
 				this.winnerDeclared = true;
+				//$scope.tttData.winnerDeclared = true;
+				$scope.tttData.$update({winnerIs: 'P2'});
+				$scope.tttData.$update({winnerDeclared: true});
 			}
 		} else if (this.playable(pad) && this.isWineerDeclared()){
 			if (!this.isOccupy(pad[row][col])){
@@ -402,16 +472,18 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 			for(var boardRow=0; boardRow<3; boardRow++){
 				for(var boardCol=0; boardCol<3; boardCol++){			
 					board[boardRow][boardCol][0][0].padActive = 1;
-					this.tttData.gameboard[boardRow][boardCol][0][0].ownBy=0;
+					$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive=1;
 					for(var cellRow=0; cellRow<3; cellRow++){
 						for(var cellCol=0; cellCol<3; cellCol++){
 							board[boardRow][boardCol][cellRow][cellCol].ownBy = 0;
-							this.tttData.gameboard[boardRow][boardCol][cellRow][cellCol].ownBy=0;
+							$scope.tttData.gameboard[boardRow][boardCol][cellRow][cellCol].ownBy=0;
 						}
 					}
 				}
 			}
-			//this.tttData.$remove();
+			$scope.tttData.winnerDeclared= false;
+			$scope.tttData.$save('winnerDeclared');
+			$scope.tttData.$save('gameboard');
 		}
 	};
 	
@@ -419,6 +491,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 		for(var boardRow=0; boardRow<3; boardRow++){
 			for(var boardCol=0; boardCol<3; boardCol++){			
 				board[boardRow][boardCol][0][0].padActive = 1;
+				$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive = 1;
 			}
 		}
 	};
