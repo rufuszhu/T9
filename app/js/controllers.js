@@ -393,7 +393,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 					$scope.tttData.gameboard[row_p][col_p][row][col].ownBy=-1;
 					this.changePadPlayable(pad, row, col);
 					$scope.tttData.$save("gameboard").then(function(){});
-					$scope.tttData.$save("turn");
+                    $scope.tttData.$save("turn");
 					
 					
 				}
