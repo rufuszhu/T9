@@ -1,6 +1,36 @@
- <div class="page-container" disabled="true";>
-		<h2>Coming Soon!</h2>
-		<div>
-			<a href="#/splash">Go Back To Main Page</a>
+ <div class="page-container" ng-controller="onlineController as onlineCtrl" disabled="true";>
+				<h1>Online Mode</h1>
+		<table>
+			<tr ng-repeat="board_r in onlineCtrl.board">
+				<td ng-repeat="pad in board_r" class="td-pad">
+					<div ng-class="{playable: onlineCtrl.playable(pad)===1, notplayable: onlineCtrl.playable(pad)===0}">
+						<table ng-class="{p1: onlineCtrl.checkWin(pad)===1, p2: onlineCtrl.checkWin(pad)===-1 }">
+							<tr ng-repeat="row in pad">	
+								<td ng-repeat="cell in row" class="td-cell">
+									<div class="div-cell" 
+										ng-class="{dark:hover && cell.ownBy===0 && onlineCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
+										ng-mouseenter="hover = true" 
+										ng-mouseleave="hover = false"
+										ng-click="onlineCtrl.cellOnClick(cell.row, cell.col, 
+												  $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div > 
+			<!--<div class="">-->
+				<button class="btn btn-info" ng-click="onlineCtrl.rematch(true)" ng-show="true" style="margin-left: 46%;"> Rematch!</button>
+				<button class="btn btn-info" ng-click="onlineCtrl.debug()" ng-show="true" style="margin-left: 46%;"> Debug!</button>
+			<!--</div>-->
 		</div>
-</div>
+		<div>
+			<a href="#/splash" ng-click="onlineCtrl.rematch(false)">Go Back To Main Page</a>
+		</div>
+    </div>
+
+	
+	

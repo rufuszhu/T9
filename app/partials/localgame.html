@@ -1,4 +1,5 @@
  <div class="page-container" ng-controller="gameController as gameCtrl" disabled="true";>
+		<h1>Local Mode</h1>
 		<table>
 			<tr ng-repeat="board_r in gameCtrl.board">
 				<td ng-repeat="pad in board_r" class="td-pad">
@@ -10,7 +11,7 @@
 										ng-class="{dark:hover && cell.ownBy===0 && gameCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
 										ng-mouseenter="hover = true" 
 										ng-mouseleave="hover = false"
-										ng-click="gameCtrl.cellOnClick(pad, cell.row, cell.col, 
+										ng-click="gameCtrl.cellOnClick(cell.row, cell.col, 
 												  $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
 									</div>
 								</td>
@@ -22,10 +23,11 @@
 		</table>
 		<div > 
 			<!--<div class="">-->
-				<button class="btn btn-info" ng-click="gameCtrl.rematch()" ng-show="true" style="margin-left: 46%;"> Rematch!</button>
+				<button class="btn btn-info" ng-click="gameCtrl.rematch(true)" ng-show="true" style="margin-left: 46%;"> Rematch!</button>
+				<button class="btn btn-info" ng-click="gameCtrl.debug()" ng-show="true" style="margin-left: 46%;"> Debug!</button>
 			<!--</div>-->
 		</div>
 		<div>
-			<a href="#/splash">Go Back To Main Page</a>
+			<a href="#/splash" ng-click="gameCtrl.rematch(false)">Go Back To Main Page</a>
 		</div>
     </div>
