@@ -21,7 +21,7 @@ app.config(function ($routeProvider){
 		})
 		.when('/local',
 		{
-			controller: 'gameController',
+			controller: '',
 			templateUrl: 'partials/localgame.html'
 		})
 		.when('/splash',
@@ -31,7 +31,7 @@ app.config(function ($routeProvider){
 		})
 		.when('/online',
 		{
-			controller: 'onlineController',
+			controller: '',
 			templateUrl: 'partials/onlinegame.html'
 		})
 		.when('/friend',
@@ -478,6 +478,8 @@ app.controller('onlineController', function(){
 	this.bigPad = pad;
 	this.turn_1 = true;
 	this.winnerDeclared = false;
+	var onlineCtrl = this;
+	var server = io.connect("http://localhost:81");
 	
     this.isOccupy = function(cell){
         if (cell.ownBy===0)
@@ -538,6 +540,10 @@ app.controller('onlineController', function(){
 					this.board[row_p][col_p][row][col].ownBy=-1;
 					this.turn_1=true;
 				}
+				
+				//Send to server
+				server.emit('orderFromClient', {row: row, col: col, row_p: row_p, col_p: col_p}, function(err, data){});
+				
 				//Switching pads
 				this.changePadPlayable(row, col);
 				//If full, choose pads freely
@@ -611,6 +617,7 @@ app.controller('onlineController', function(){
 			rematchConfirm = confirm("Rematch. Are you sure?");
 		}else{
 			rematchConfirm = true;
+			//this.server.close();
 		}
 	
 		if (rematchConfirm){
@@ -636,12 +643,18 @@ app.controller('onlineController', function(){
 		console.log(this.bigPad[2][0].ownBy +" "+ this.bigPad[2][1].ownBy +" "+ this.bigPad[2][2].ownBy);
 	};
 	
-	var onlineCtrl = this;
+
+	server.on('connect', function(data) {
+		onlineCtrl.changePadPlayable(-1, -1);
+		var username = prompt("Please enter your name","Harry Potter");
+		server.emit('join', username, function(err, data){});
+	});
 	
-	var server = io.connect("http://localhost:81");
-	server.on('orderToClient', function (incomingOrder) {
-		var order = JSON.parse(incomingOrder);
-		alert('Order received.');
+	server.on('loginSuccess', function(){
+		onlineCtrl.freeAllPads();
+	});
+	
+	server.on('orderToClient', function (order) {
 		onlineCtrl.cellOnClick(order.row, order.col, order.row_p, order.col_p);
 	});
 	

@@ -1,7 +1,8 @@
 //Server for the online gaming
 
 var express = require('express');
-//var parser = new require('xml2json');
+var xml2json = new require('node-xml2json');
+var redis = new require('redis');
 var app = express();
 var io = require('socket.io').listen(81);
 
@@ -12,23 +13,27 @@ app.listen(8080);
 
 io.sockets.on('connection', function (client) {
   console.log("Client connected...");
-  //client.emit('messages', { hello: 'world' });
-  
-  var order= {row: 0, col: 0, row_p: 0, col_p: 0};
-  //var json = parser.toJson(move);
-  client.emit('orderToClient', order);
-  
-  setTimeout(function(){
-	var order= {row: 2, col: 0, row_p: 0, col_p: 0};
-	//var json = parser.toJson(move);
-	client.emit('orderToClient', order);
-  }, 5000);
-  
-  client.on('disconnect', function () {
-    console.log("Client disconnected...");
-  });
-  
-  client.on('orderFromClient', function(){
+  client.on('join', function(name) {
+	client.username = name;
+	console.log("Connect user: " + client.username);
+	client.emit('loginSuccess', function(){});
+	
+	//client.emit('orderToClient', { hello: 'Hello!'});
+	//client.emit('orderToClient', {row: 2, col: 1, row_p: 0, col_p: 2}, function(err, data){});
 	
   });
+  
+  client.on('orderFromClient', function(order){
+	console.log("Received new move from " + client.username);
+	console.log(order);
+	client.broadcast.emit('orderToClient', order);
+  });
+  
+ 
+  client.on('disconnect', function () {
+    console.log("Client disconnected...");
+	console.log("Disconnect user: " + client.username);
+
+  });
+
 });
