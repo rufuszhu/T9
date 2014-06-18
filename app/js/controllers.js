@@ -233,27 +233,46 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	//alert($location.absUrl());  //this will alert absolute URL of the site in the browser address bar
 	
 	fbURL = fbURL + '/friendgames' + '/' +$routeParams.gameId;
-	$scope.tttData = $firebase(new Firebase(fbURL));;
-	$scope.tttData.$bind($scope,"board");
+	$scope.tttData = $firebase(new Firebase(fbURL));
 	
-    //$scope.tttData.$add({game1:this.board});
+	var abc = new Firebase(fbURL+"/isGameInit");
+	abc.once('value', function(snapshot) {
+		if(snapshot.val().toString()=="true"){
+			alert('isGameInit? ' + snapshot.val().toString());
+		}
+		else{
+		
+		}
+		
+	});
+	
+	/*
+	if($scope.tttData.winnerDeclared){
+		alert('exists ' + $scope.tttData.winnerDeclared);
+	}
+	else{
+		alert('no exist '+ $scope.tttData.winnerDeclared);
+	}
+	
+	*/
+	$scope.tttData.$bind($scope,"board");
+
 	$scope.tttData.gameboard = this.board;
 	$scope.tttData.turn =0; //0=P1, 1=P2;
 	$scope.tttData.winnerDeclared =false;
+	//$scope.tttData.isGameInit =true;
+	$scope.tttData.winnerIs ="";
+
+	//$scope.tttData.$save("gameboard");
+	//$scope.tttData.$update({winnerIs: ''});
+	//$scope.tttData.$save("turn");
+	//$scope.tttData.$save("winnerDeclared");
+	//$scope.tttData.$save("isGameInit");
 	
-	$scope.tttData.$update({winnerIs: ''});
-	$scope.tttData.$save("gameboard");
-	$scope.tttData.$save("turn");
-	$scope.tttData.$save("winnerDeclared");
+	$scope.tttData.$update({isGameInit: 'true'});
 	
-	//$scope.isBlack = false;
 	$scope.tttData.$on('change', function(){
-	/*
-	if(!$scope.isBlack)
-		$scope.isBlack = true;
-	else
-		$scope.isBlack = false;
-	*/
+
 		$scope.updateActivePad();
 		$scope.updateCells();
 		//check dead case OK
@@ -264,7 +283,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 		}
 		else if ($scope.tttData.winnerIs === 'P2'){
 			alert("From AngularFire: Player 2 is the winner!");
-			$scope.tttData.unbind();
+			$scope.tttData.$unbind();
 		}
 	});
 	
