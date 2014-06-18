@@ -235,26 +235,24 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	fbURL = fbURL + '/friendgames' + '/' +$routeParams.gameId;
 	$scope.tttData = $firebase(new Firebase(fbURL));
 	
-	var abc = new Firebase(fbURL+"/isGameInit");
-	abc.once('value', function(snapshot) {
-		if(snapshot.val().toString()=="true"){
-			alert('isGameInit? ' + snapshot.val().toString());
+	var gameInit = new Firebase(fbURL+"/isGameInit");
+	var player;
+	gameInit.once('value', function(snapshot) {
+		alert('isGameInit? ' + snapshot.val());
+		if(snapshot.val()==="true" ){
+			//Game is already initialized by Player 1, so assigned local player variable to P2 
+			//alert('isGameInit? ' + snapshot.val().toString());
+			player = 1; // 1 is P2
+			alert(player);
 		}
 		else{
-		
+			player = 0  // 0 is P1
+			alert(player);
+			$scope.tttData.$update({isGameInit: 'true'});
 		}
 		
 	});
 	
-	/*
-	if($scope.tttData.winnerDeclared){
-		alert('exists ' + $scope.tttData.winnerDeclared);
-	}
-	else{
-		alert('no exist '+ $scope.tttData.winnerDeclared);
-	}
-	
-	*/
 	$scope.tttData.$bind($scope,"board");
 
 	$scope.tttData.gameboard = this.board;
@@ -269,7 +267,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	//$scope.tttData.$save("winnerDeclared");
 	//$scope.tttData.$save("isGameInit");
 	
-	$scope.tttData.$update({isGameInit: 'true'});
+	//$scope.tttData.$update({isGameInit: 'true'});
 	
 	$scope.tttData.$on('change', function(){
 
@@ -350,11 +348,14 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	
     this.cellOnClick = function(pad, row, col, row_p, col_p){
 		if(this.playable(pad) && !(this.isWineerDeclared())){
+			console.log(player);
+			//console.log(this.turn_1);
+			console.log($scope.tttData.turn);
 			//Setting ownership
 			if (this.isOccupy(pad[row][col])){
 				alert("This is occupied!");
 			}else{
-				if(this.turn_1 && $scope.tttData.turn === 0){
+				if($scope.tttData.turn === 0 && player===0){
 					pad[row][col].Symbol="X";
 					pad[row][col].ownBy=1;
 					this.turn_1=false;
@@ -365,7 +366,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 					$scope.tttData.$save("turn");
 					
 					//$scope.tttData.$update({name: 'alex'}).then(function(result){});
-				}else if (!this.turn_1 && $scope.tttData.turn === 1){
+				}else if ($scope.tttData.turn === 1 && player=== 1){
 					pad[row][col].Symbol="O";
 					pad[row][col].ownBy=-1;
 					this.turn_1=true;
