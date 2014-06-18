@@ -235,20 +235,24 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	fbURL = fbURL + '/friendgames' + '/' +$routeParams.gameId;
 	$scope.tttData = $firebase(new Firebase(fbURL));
 	
-	var gameInit = new Firebase(fbURL+"/isGameInit");
+	var gameInit = new Firebase(fbURL+"/gameStatus");
 	var player;
 	gameInit.once('value', function(snapshot) {
-		alert('isGameInit? ' + snapshot.val());
-		if(snapshot.val()==="true" ){
+		//alert('gameStatus? ' + snapshot.val());
+		if(snapshot.val()==="pending" ){
 			//Game is already initialized by Player 1, so assigned local player variable to P2 
-			//alert('isGameInit? ' + snapshot.val().toString());
+			//alert('gameStatus? ' + snapshot.val().toString());
 			player = 1; // 1 is P2
-			alert(player);
+			//alert(player);
+			$scope.tttData.$update({gameStatus: 'started'});
 		}
-		else{
+		else if (snapshot.val()==="started"){
+			player = 2; // 2 is a spectator
+			alert("you are just a spectator!");
+		} else{
 			player = 0  // 0 is P1
-			alert(player);
-			$scope.tttData.$update({isGameInit: 'true'});
+			//alert(player);
+			$scope.tttData.$update({gameStatus: 'pending'});
 		}
 		
 	});
@@ -258,16 +262,16 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	$scope.tttData.gameboard = this.board;
 	$scope.tttData.turn =0; //0=P1, 1=P2;
 	$scope.tttData.winnerDeclared =false;
-	//$scope.tttData.isGameInit =true;
+	//$scope.tttData.gameStatus =true;
 	$scope.tttData.winnerIs ="";
 
 	//$scope.tttData.$save("gameboard");
 	//$scope.tttData.$update({winnerIs: ''});
 	//$scope.tttData.$save("turn");
 	//$scope.tttData.$save("winnerDeclared");
-	//$scope.tttData.$save("isGameInit");
+	//$scope.tttData.$save("gameStatus");
 	
-	//$scope.tttData.$update({isGameInit: 'true'});
+	//$scope.tttData.$update({gameStatus: 'true'});
 	
 	$scope.tttData.$on('change', function(){
 
@@ -348,9 +352,9 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	
     this.cellOnClick = function(pad, row, col, row_p, col_p){
 		if(this.playable(pad) && !(this.isWineerDeclared())){
-			console.log(player);
+			console.log("player: " + player);
 			//console.log(this.turn_1);
-			console.log($scope.tttData.turn);
+			console.log("turn: " + $scope.tttData.turn);
 			//Setting ownership
 			if (this.isOccupy(pad[row][col])){
 				alert("This is occupied!");
