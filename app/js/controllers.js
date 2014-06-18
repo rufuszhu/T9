@@ -4,7 +4,8 @@
 
 var app = angular.module('T9', ['ngRoute', 'firebase']);
 var URL = 'https://t9.firebaseio.com';
-app.value('fbURL', URL + '/games');
+app.value('fbURL', URL);
+//app.value('fbURL', URL + '/friendgames');
 
 /*
 app.factory('T9Data', function($firebase, fbURL){
@@ -34,7 +35,7 @@ app.config(function ($routeProvider){
 			controller: '',
 			templateUrl: 'partials/onlinegame.html'
 		})
-		.when('/friend',
+		.when('/friend/:gameId',
 		{
 			controller: '',
 			templateUrl: 'partials/friendgame.html'
@@ -44,7 +45,7 @@ app.config(function ($routeProvider){
 			controller: '',
 			templateUrl: 'partials/howtoplay.html'
 		})
-		.otherwise({redirectTo: 'partials/splash.html'});
+		.otherwise({redirectTo: '/'});
 		
 });
 
@@ -213,15 +214,25 @@ app.controller('gameController', function(){
 	
 });
 
-app.controller('splashController', function($scope){
+app.controller('splashController', function($scope, $location){
 	this.splashboard = board;
+	
+	$scope.newFriendGame = function(){
+		console.log('Creating new friend-friend game');
+		//alert(Math.floor(Math.random() * 99999).toString());
+		$location.path( "/friend/" + Math.floor(Math.random() * 99999).toString());
+	};
 });
 
-app.controller('friendgameController', function($scope, fbURL, $firebase){
+app.controller('friendgameController', function($scope, fbURL, $firebase, $location, $routeParams){
 	this.board  = board;
 	this.bigPad = pad;
 	this.turn_1 = true;
 	this.winnerDeclared = false;
+	//alert($routeParams.gameId); //this will alert gameId
+	//alert($location.absUrl());  //this will alert absolute URL of the site in the browser address bar
+	
+	fbURL = fbURL + '/friendgames' + '/' +$routeParams.gameId;
 	$scope.tttData = $firebase(new Firebase(fbURL));;
 	$scope.tttData.$bind($scope,"board");
 	
@@ -249,7 +260,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase){
 		//check win
 		if ($scope.tttData.winnerIs === 'P1'){
 			alert("From AngularFire: Player 1 is the winner!");
-			$scope.tttData.unbind();
+			$scope.tttData.$unbind();
 		}
 		else if ($scope.tttData.winnerIs === 'P2'){
 			alert("From AngularFire: Player 2 is the winner!");
