@@ -102,12 +102,13 @@ border: medium solid PaleVioletRed;
 	
 }
 
-#buttonsdiv{
+#buttonsdiv, .page-container .btn-group{
 	margin-top:20px;
+	margin-bottom:20px;
 	font-family: 'Fjalla One', sans-serif;
 }
 
-#buttonsdiv button{
+#buttonsdiv button, .page-container .btn-group button{
 	-moz-transform: scale(1.3);
 	-webkit-transform: scale(1.3);
 	margin-left:20px;

@@ -20,12 +20,13 @@
 				</td>
 			</tr>
 		</table>
-		<div > 
-			<!--<div class="">-->
-				<button class="btn btn-info" ng-click="friendgameCtrl.rematch()" ng-show="true" style="margin-left: 46%;"> Rematch!</button>
-			<!--</div>-->
+		<div class="span7 text-center"> 
+			<div class="btn-group">
+				<a><button class="btn btn-info" ng-click="friendgameCtrl.rematch()" ng-show="true"> Rematch!</button></a>
+				<a href="#/"><button class="btn btn-info" ng-click="gameCtrl.debug()" ng-show="true"> Go Back!</button></a>
+			</div>
 		</div>
 		<div>
-			<a href="#/splash">Go Back To Main Page</a>
+			<a href="#/splash" ng-show="false">Go Back To Main Page</a>
 		</div>
     </div>
