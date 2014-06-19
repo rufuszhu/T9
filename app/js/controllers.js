@@ -62,10 +62,46 @@ app.controller('gameController', function(){
 			{return true;}
     };
 
+	this.checkPadFull = function(pad, row, col){
+        var cellCount=0;
+        for(var padRow=0; padRow<3; padRow++){
+            for(var padCol=0; padCol<3; padCol++){
+                if (board[row][col][padRow][padCol].ownBy === 0){
+                    //alert("pad " + row + ", " + col + "is not full!");
+                    return 0;
+                }
+                else{
+                    cellCount++;
+                }
+            }
+        }
+        //alert("pad " + row + ", " + col + " is full. : " + cellCount);
+        return cellCount==9? 1:0; 
+    };
+
+	this.playable = function(pad){
+		var padActive = pad[0][0].padActive;
+		return padActive;
+	};
+	
+	
+	
+	this.freeAllPads = function(){
+		for(var boardRow=0; boardRow<3; boardRow++){
+			for(var boardCol=0; boardCol<3; boardCol++){			
+				this.board[boardRow][boardCol][0][0].padActive = 1;
+			}
+		}
+	};
+	
 	this.changePadPlayable = function(row, col){
 		for(var boardRow=0; boardRow<3; boardRow++){
 			for(var boardCol=0; boardCol<3; boardCol++){
 				if (boardRow==row && boardCol==col){
+				    if(this.checkPadFull(pad, row, col)===1){
+                        this.freeAllPads();
+                        return;
+                    }
 					this.board[boardRow][boardCol][0][0].padActive = 1;
 				}
 				else {
@@ -75,11 +111,7 @@ app.controller('gameController', function(){
 		}
 	};
 	
-	this.playable = function(pad){
-		var padActive = pad[0][0].padActive;
-		return padActive;
-	};
-	
+	/* // this function is not working in one very specific condition, which could cause dead lock of game
 	this.checkPadFull = function(pad){
 		for(var padRow=0; padRow<3; padRow++){
 			for(var padCol=0; padCol<3; padCol++){
@@ -90,14 +122,7 @@ app.controller('gameController', function(){
 		}
 		return 1; 
 	};
-	
-	this.freeAllPads = function(){
-		for(var boardRow=0; boardRow<3; boardRow++){
-			for(var boardCol=0; boardCol<3; boardCol++){			
-				this.board[boardRow][boardCol][0][0].padActive = 1;
-			}
-		}
-	};
+	*/
 	
     this.cellOnClick = function(row, col, row_p, col_p){
 		if(this.playable(this.board[row_p][col_p]) && !(this.winnerDeclared)){
@@ -117,9 +142,9 @@ app.controller('gameController', function(){
 				//Switching pads
 				this.changePadPlayable(row, col);
 				//If full, choose pads freely
-				if (this.checkPadFull(this.board[row_p][col_p])===1){
-					this.freeAllPads();
-				}
+				//if (this.checkPadFull(this.board[row_p][col_p])===1){
+				//	this.freeAllPads();
+				//}
 			}
 			
 			//var result = this.checkWin(pad);
