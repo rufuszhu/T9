@@ -72,6 +72,26 @@ border: medium solid PaleVioletRed;
 }
 
 /*splash UI design */
+#splashheader {
+ font-family: Tahoma;
+}
+
+#gameheader {
+   
+    color: #AA55A3;
+    text-shadow: 0 0 0 rgba(0,0,0,0.3), 0 0 0 rgba(0,0,0,0.3), 0 0 0 rgba(0,0,0,0.1), 0 0 0 rgba(0,0,0,0.1), 0 -1px 5px rgba(255,255,255,0.5);
+    -webkit-transition: all 0.5s;
+	
+	margin:10px;
+	opacity:0.8;
+}
+
+#gameheader:hover {
+    //color: transparent;
+    text-shadow: -9px 0 5px rgba(0,0,0,0.3), 9px 0 5px rgba(0,0,0,0.3), -21px 0 5px rgba(0,0,0,0.1), 21px 0 5px rgba(0,0,0,0.1), 0 0 0 rgba(0,0,0,0.1);
+	opacity:1.0;
+}
+
 .page-container .btn-group> a:hover{
 	margin-right: 20px;
 	margin-left: 20px;
