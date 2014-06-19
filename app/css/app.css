@@ -73,7 +73,11 @@ border: medium solid PaleVioletRed;
 
 /*splash UI design */
 #splashheader {
- font-family: Tahoma;
+ //font-family: "Galindo";
+// font-family: 'Dosis', sans-serif;
+ font-family: 'Fjalla One', sans-serif;
+ // font-style: normal;
+ // font-weight: 600;
 }
 
 #gameheader {
