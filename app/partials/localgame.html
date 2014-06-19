@@ -1,4 +1,9 @@
  <div class="page-container" ng-controller="gameController as gameCtrl" disabled="true";>
+		<section class="statusbar"> 
+			<div class="player1bar" ng-class="{slide: gameCtrl.turn_1 =='true'}"></div>
+			<div class="bar-status"><h3>Game Started!</h3></div>
+			<div class="player2bar" ng-class="{slide: gameCtrl.turn_1 =='true'}"></div>
+		</section>
 		<h1>Local Mode</h1>
 		<table>
 			<tr ng-repeat="board_r in gameCtrl.board">

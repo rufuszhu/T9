@@ -6,6 +6,7 @@
 -moz-transition: all 0.5s ease;
 -o-transition: all 0.5s ease;
 transition: all 0.5s ease;
+font-family: 'Fjalla One', sans-serif;
 }
 
 .page-container {
@@ -71,7 +72,49 @@ border: medium solid #48abe1;
 border: medium solid PaleVioletRed;
 }
 
-/*splash UI design */
+/*Game UI design */
+.statusbar {
+	background-color: green;
+	width:100%;
+	height:50px;
+	margin: auto;
+	
+}
+
+div.player1bar{
+	background-color: #48abe1;
+	width:10%;
+	height:50px;
+	float: left;
+	//border: medium solid #48abe1;
+}
+
+div.bar-status{
+	width:80%;
+	height:50px;
+	float: left;
+	color: white;
+	font-size: larger;
+	font-weight: 400;
+	text-align: center;
+    vertical-align: middle;
+   // display: table-cell;
+}
+div.bar-status h3{
+	
+	text-align: center;
+	vertical-align: middle;
+	position: relative;
+
+}
+
+div.player2bar{
+	background-color: PaleVioletRed;
+	width:10%;
+	height:50px;
+	float: right;
+}
+
 #splashheader {
  //font-family: "Galindo";
 // font-family: 'Dosis', sans-serif;
