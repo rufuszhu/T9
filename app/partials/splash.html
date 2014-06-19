@@ -1,17 +1,18 @@
  <div class="page-container" ng-controller="splashController as splashCtrl" disabled="true";>
+	<div class="splashdiv">
 		<h1>Tic Tac Toe 9!</h1>
-		<table>
+		<table class="padtable">
 			<tr ng-repeat="board_r in splashCtrl.splashboard">
 				<td ng-repeat="pad in board_r" class="td-pad-splash">
 					<div class="splashplayable">
-						<table>
+						<table class="celltable">
 							<tr ng-repeat="row in pad">	
 								<td ng-repeat="cell in row" class="td-cell-splash">
 									<div class="div-cell" 
 										ng-class="{dark:hover}"
 										ng-mouseenter="hover = true" 
 										ng-mouseleave="hover = false"
-										>                                                        
+										> <div class="decordiv"></div>                                                       
 									</div>
 								</td>
 							</tr>
@@ -28,4 +29,5 @@
 				<a href="#/howto"><button class="btn btn-info" ng-click="" ng-show="true" style="margin-left: 46%;"> How to Play!</button></a>
 			</div>
 		</div>
-    </div>
+	</div>
+</div>

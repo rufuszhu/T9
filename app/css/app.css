@@ -29,7 +29,14 @@ padding:10px;
 padding:2px;
 }
 .page-container .td-cell-splash {
-padding:0px;
+	-webkit-animation: paddingInc 2s 1 ease;
+	-moz-animation: paddingInc 2s 1 ease;
+	animation: paddingInc 2s 1 ease;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+	
 }
 
 .page-container .div-cell {
@@ -70,12 +77,165 @@ border: medium solid PaleVioletRed;
  box-shadow: 0px 0px 10px #98FB98;
  -webkit-animation: flashbackground 2s infinite ease;
   -moz-animation: flashbackground 2s infinite ease;
+  //background-color: #eaeaea;
 }
 
 .page-container .notplayable {
  -webkit-transform: scale(0.8);
  -moz-transform: scale(0.8);
  opacity: 0.5;
+}
+.page-container .decordiv {
+
+}
+
+.padtable> tr:nth-child(3) {
+    //background: #ff0000;
+}
+
+/*animation of a single cell 
+.padtable :nth-child(1)> td:nth-child(1)> .splashplayable> .celltable> :nth-child(1)> tr:nth-child(1)> td:nth-child(1)>div{
+
+	//-webkit-animation: fadein 1s 1 ease;
+	//-moz-animation: fadein 1s 1 ease;
+	
+    -webkit-animation-delay: 2s;
+	-moz-animation-delay: 2s;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+*/
+
+/*animation of a row in a pad */
+.padtable :nth-child(3)> td:nth-child(2)> .splashplayable> .celltable> :nth-child(1)> tr:nth-child(3) div{
+	-webkit-animation: fadein 1s 1 ease;
+	-moz-animation: fadein 1s 1 ease;
+	
+    -webkit-animation-delay: 2s;
+	-moz-animation-delay: 2s;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.padtable :nth-child(3)> td:nth-child(2)> .splashplayable> .celltable> :nth-child(1)> tr:nth-child(2) div{
+	-webkit-animation: fadein 1s 1 ease;
+	-moz-animation: fadein 1s 1 ease;
+	
+    -webkit-animation-delay: 2.3s;
+	-moz-animation-delay: 2.3s;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.padtable :nth-child(3)> td:nth-child(2)> .splashplayable> .celltable> :nth-child(1)> tr:nth-child(1) div{
+	-webkit-animation: fadein 1s 1 ease;
+	-moz-animation: fadein 1s 1 ease;
+	
+    -webkit-animation-delay: 2.6s;
+	-moz-animation-delay: 2.6s;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.padtable :nth-child(2)> td:nth-child(2)> .splashplayable> .celltable> :nth-child(1)> tr:nth-child(3) div{
+	-webkit-animation: fadein 1s 1 ease;
+	-moz-animation: fadein 1s 1 ease;
+	
+    -webkit-animation-delay: 2.9s;
+	-moz-animation-delay: 2.9s;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.padtable :nth-child(2)> td:nth-child(2)> .splashplayable> .celltable> :nth-child(1)> tr:nth-child(2) div{
+	-webkit-animation: fadein 1s 1 ease;
+	-moz-animation: fadein 1s 1 ease;
+	
+    -webkit-animation-delay: 3.2s;
+	-moz-animation-delay: 3.2s;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.padtable :nth-child(2)> td:nth-child(2)> .splashplayable> .celltable> :nth-child(1)> tr:nth-child(1) div{
+	-webkit-animation: fadein 1s 1 ease;
+	-moz-animation: fadein 1s 1 ease;
+	
+    -webkit-animation-delay: 3.5s;
+	-moz-animation-delay: 3.5s;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.padtable :nth-child(1)> td> .splashplayable> .celltable> :nth-child(1)> tr  div{
+	-webkit-animation: fadein 1s 1 ease;
+	-moz-animation: fadein 1s 1 ease;
+	
+    -webkit-animation-delay: 3.8s;
+	-moz-animation-delay: 3.8s;
+	
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+
+
+@-webkit-keyframes paddingInc{
+	from{
+		padding: 0px;
+	}
+	to{
+		padding: 2px;
+	}
+}
+
+@-moz-keyframes paddingInc{
+	from{
+		padding: 0px;
+	}
+	to{
+		padding: 2px;
+	}
+}
+
+@-webkit-keyframes fadein{
+  from{
+    background-color: #eaeaea;
+    -webkit-transform: scale(0.5);
+    -moz-transform: scale(0.5);
+	}
+  to{
+    background-color: #CB5198;
+	opacity: 0.9;
+	
+	}
+}
+
+@-moz-keyframes fadein{
+  from{
+    background-color: #eaeaea;
+    -webkit-transform: scale(0.5);
+    -moz-transform: scale(0.5);
+	}
+  to{
+    background-color: #CB5198;
+	opacity: 0.9;
+	}
 }
 
 @-webkit-keyframes flashbackground{
@@ -104,9 +264,10 @@ border: medium solid PaleVioletRed;
 
 .centerdiv {
 	margin: auto;
-	
-	
 }
+
+
+
 /*.page-container .notplayable:hover {
  -webkit-transform: scale(1);
  -moz-transform: scale(1);
