@@ -528,6 +528,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			$scope.tttData.winnerDeclared= false;
 			$scope.tttData.$save('winnerDeclared');
 			$scope.tttData.$save('gameboard');
+			$scope.tttData.$update({turn:0});
 		}
 	};
 	
@@ -592,6 +593,11 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	$window.onbeforeunload  = function(){
 		$scope.resetAll();
 		$scope.tttData.$remove();
+	};
+	
+	$window.onhashchange = function(){
+		//$scope.resetAll();
+		//$scope.tttData.$remove();
 	};
 	
 });

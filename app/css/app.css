@@ -101,8 +101,8 @@ div.bar-status{
 }
 div.bar-status.win{
 	width:100%;
-	//-moz-animation: winfadein 0.5s 1 ease;
-	//-webkit-animation: winfadein 0.5s 1 ease;
+	-moz-animation: winfadein 0.5s 1 ease;
+	-webkit-animation: winfadein 0.5s 1 ease;
 }
 div.bar-status h2{
 	text-align: center;
