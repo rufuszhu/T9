@@ -7,6 +7,7 @@
 		</div>
 		<div class="player2bar" ng-class="{slide: friendgameCtrl.turn_1 ===false, shrink: friendgameCtrl.turn_1 ===true }" ng-hide="friendgameCtrl.isWinnerDeclared()"></div>
 	</section>
+	<h3>Friend Mode</h3>
 	<table>
 		<tr ng-repeat="board_r in friendgameCtrl.board">
 			<td ng-repeat="pad in board_r" class="td-pad">

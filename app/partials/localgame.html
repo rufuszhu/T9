@@ -7,7 +7,7 @@
 			</div>
 			<div class="player2bar" ng-class="{slide: gameCtrl.turn_1 ===false, shrink: gameCtrl.turn_1 ===true }" ng-hide="gameCtrl.isWinnerDeclared()"></div>
 		</section>
-		<h1>Local Mode</h1>
+		<h3>Local Mode</h3>
 		<table>
 			<tr ng-repeat="board_r in gameCtrl.board">
 				<td ng-repeat="pad in board_r" class="td-pad">
