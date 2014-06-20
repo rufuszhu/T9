@@ -98,14 +98,17 @@ div.bar-status{
 	font-weight: 400;
 	text-align: center;
     vertical-align: middle;
-   // display: table-cell;
 }
-div.bar-status h3{
-	
+div.bar-status.win{
+	width:100%;
+	//-moz-animation: winfadein 0.5s 1 ease;
+	//-webkit-animation: winfadein 0.5s 1 ease;
+}
+div.bar-status h2{
 	text-align: center;
 	vertical-align: middle;
 	position: relative;
-
+	top: -20%;
 }
 
 div.player2bar{
@@ -113,6 +116,19 @@ div.player2bar{
 	width:10%;
 	height:50px;
 	float: right;
+}
+
+div.player1bar.slide{
+	width: 15%;
+}
+div.player1bar.shrink{
+	width: 5%;
+}
+div.player2bar.slide{
+	width: 15%;
+}
+div.player2bar.shrink{
+	width: 5%;
 }
 
 #splashheader {
@@ -312,6 +328,30 @@ div.player2bar{
 	
 	}
 }
+@-webkit-keyframes winfadein{
+  from{
+    //background-color: transparent;
+    opacity: 0;
+	}
+  to{
+   // background-color: green;
+	opacity: 1;
+	
+	}
+}
+
+@-moz-keyframes winfadein{
+  from{
+    //background-color: transparent;
+    opacity: 0;
+	}
+  to{
+    //background-color: green;
+	opacity: 1;
+	
+	}
+}
+
 
 @-moz-keyframes fadein{
   from{

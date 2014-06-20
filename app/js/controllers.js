@@ -54,6 +54,7 @@ app.controller('gameController', function(){
 	this.bigPad = pad;
 	this.turn_1 = true;
 	this.winnerDeclared = false;
+	this.winnerIs;
 	
     this.isOccupy = function(cell){
         if (cell.ownBy===0)
@@ -61,6 +62,10 @@ app.controller('gameController', function(){
 		else
 			{return true;}
     };
+	
+	this.isWinnerDeclared = function(){
+		return this.winnerDeclared;
+	};
 
 	this.checkPadFull = function(pad, row, col){
         var cellCount=0;
@@ -152,13 +157,15 @@ app.controller('gameController', function(){
 			this.bigPad[row_p][col_p].ownBy = localResult;
 			var result = this.checkWin(this.bigPad);
 			if (result===1){
-				alert("Player 1 wins!");
+				//alert("Player 1 wins!");
 				this.winnerDeclared = true;
+				this.winnerIs=1;
 				this.changePadPlayable(-1, -1);
 			}
 			else if (result===-1){
-				alert("Player 2 wins!");
+				//alert("Player 2 wins!");
 				this.winnerDeclared = true;
+				this.winnerIs=2;
 				this.changePadPlayable(-1, -1);
 			}
 		}
@@ -235,11 +242,14 @@ app.controller('gameController', function(){
 		console.log(this.bigPad[0][0].ownBy +" "+ this.bigPad[0][1].ownBy +" "+ this.bigPad[0][2].ownBy);
 		console.log(this.bigPad[1][0].ownBy +" "+ this.bigPad[1][1].ownBy +" "+ this.bigPad[1][2].ownBy);
 		console.log(this.bigPad[2][0].ownBy +" "+ this.bigPad[2][1].ownBy +" "+ this.bigPad[2][2].ownBy);
+		this.winnerDeclared=true;
+		this.winnerIs=1;
+		
 	};
 	
 });
 
-app.controller('splashController', function($scope, $location){
+app.controller('splashController', function($scope, $location, $window){
 	this.splashboard = board;
 	
 	$scope.newFriendGame = function(){
@@ -247,13 +257,35 @@ app.controller('splashController', function($scope, $location){
 		//alert(Math.floor(Math.random() * 99999).toString());
 		$location.path( "/friend/" + Math.floor(Math.random() * 99999).toString());
 	};
+	
+	$window.onbeforeunload  = function(){
+		
+	};
 });
 
-app.controller('friendgameController', function($scope, fbURL, $firebase, $location, $routeParams){
+app.controller('friendgameController', function($scope, fbURL, $firebase, $location, $routeParams, $window){
+	//$window.close();
 	this.board  = board;
 	this.bigPad = pad;
 	this.turn_1 = true;
 	this.winnerDeclared = false;
+	this.winnerIs;
+	
+	$scope.resetAll = function(){
+		for(var boardRow=0; boardRow<3; boardRow++){
+			for(var boardCol=0; boardCol<3; boardCol++){			
+				board[boardRow][boardCol][0][0].padActive = 1;
+				//$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive=1;
+				for(var cellRow=0; cellRow<3; cellRow++){
+					for(var cellCol=0; cellCol<3; cellCol++){
+						board[boardRow][boardCol][cellRow][cellCol].ownBy = 0;
+						//$scope.tttData.gameboard[boardRow][boardCol][cellRow][cellCol].ownBy=0;
+					}
+				}
+			}
+		}
+	};
+	
 	//alert($routeParams.gameId); //this will alert gameId
 	//alert($location.absUrl());  //this will alert absolute URL of the site in the browser address bar
 	
@@ -281,7 +313,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 		}
 		
 	});
-	
+	$scope.resetAll();
 	$scope.tttData.$bind($scope,"board");
 
 	$scope.tttData.gameboard = this.board;
@@ -325,7 +357,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			{return true;}
     };
 	
-	this.isWineerDeclared = function(){
+	this.isWinnerDeclared = function(){
 		return $scope.tttData.winnerDeclared;
 	};
 	
@@ -376,7 +408,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	
 	
     this.cellOnClick = function(pad, row, col, row_p, col_p){
-		if(this.playable(pad) && !(this.isWineerDeclared())){
+		if(this.playable(pad) && !(this.isWinnerDeclared())){
 			console.log("player: " + player);
 			//console.log(this.turn_1);
 			console.log("turn: " + $scope.tttData.turn);
@@ -417,6 +449,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			if (result===1){
 				//alert("Player 1 wins!");
 				this.winnerDeclared = true;
+				this.winnerIs =1;
 				//$scope.tttData.winnerDeclared = true;
 				//$scope.tttData.$update({winnerIs: 'P1'});
 				$scope.tttData.$update({winnerDeclared: true, winnerIs: 'P1'});
@@ -424,11 +457,12 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			else if (result===-1){
 				//alert("Player 2 wins!");
 				this.winnerDeclared = true;
+				this.winnerIs =2;
 				//$scope.tttData.winnerDeclared = true;
 				$scope.tttData.$update({winnerIs: 'P2'});
 				$scope.tttData.$update({winnerDeclared: true});
 			}
-		} else if (this.playable(pad) && this.isWineerDeclared()){
+		} else if (this.playable(pad) && this.isWinnerDeclared()){
 			if (!this.isOccupy(pad[row][col])){
 				this.changePadPlayable(pad, row, col);
 			}
@@ -477,7 +511,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 		return 0;
 	};
 	
-	this.rematch = function(){
+	$scope.rematch = function(){
 		if (confirm("Rematch. Are you sure???")){
 			for(var boardRow=0; boardRow<3; boardRow++){
 				for(var boardCol=0; boardCol<3; boardCol++){			
@@ -495,6 +529,26 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			$scope.tttData.$save('winnerDeclared');
 			$scope.tttData.$save('gameboard');
 		}
+	};
+	
+	$scope.resetAll = function(){
+		for(var boardRow=0; boardRow<3; boardRow++){
+			for(var boardCol=0; boardCol<3; boardCol++){			
+				board[boardRow][boardCol][0][0].padActive = 1;
+				//$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive=1;
+				for(var cellRow=0; cellRow<3; cellRow++){
+					for(var cellCol=0; cellCol<3; cellCol++){
+						board[boardRow][boardCol][cellRow][cellCol].ownBy = 0;
+						//$scope.tttData.gameboard[boardRow][boardCol][cellRow][cellCol].ownBy=0;
+					}
+				}
+			}
+		}
+		//$scope.tttData.winnerDeclared= false;
+		//$scope.tttData.turn= 1;
+		//$scope.tttData.$save('winnerDeclared');
+		//$scope.tttData.$save('gameboard');
+		
 	};
 	
 	this.freeAllPads = function(){
@@ -528,6 +582,16 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 				}
 			}
 		}
+	};
+	
+	$scope.quit = function(){
+		$scope.resetAll();
+		$scope.tttData.$remove();
+	}
+	
+	$window.onbeforeunload  = function(){
+		$scope.resetAll();
+		$scope.tttData.$remove();
 	};
 	
 });

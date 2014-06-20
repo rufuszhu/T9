@@ -1,8 +1,11 @@
  <div class="page-container" ng-controller="gameController as gameCtrl" disabled="true";>
 		<section class="statusbar"> 
-			<div class="player1bar" ng-class="{slide: gameCtrl.turn_1 =='true'}"></div>
-			<div class="bar-status"><h3>Game Started!</h3></div>
-			<div class="player2bar" ng-class="{slide: gameCtrl.turn_1 =='true'}"></div>
+			<div class="player1bar" ng-class="{slide: gameCtrl.turn_1 ===true , shrink: gameCtrl.turn_1 ===false }" ng-hide="gameCtrl.isWinnerDeclared()"></div>
+			<div class="bar-status"  ng-class="{win: gameCtrl.isWinnerDeclared()===true}">
+				<h3 ng-show="false">Game Started!</h3>
+				<h2 ng-show="gameCtrl.isWinnerDeclared()">Player {{gameCtrl.winnerIs}} is the winner!</h2>
+			</div>
+			<div class="player2bar" ng-class="{slide: gameCtrl.turn_1 ===false, shrink: gameCtrl.turn_1 ===true }" ng-hide="gameCtrl.isWinnerDeclared()"></div>
 		</section>
 		<h1>Local Mode</h1>
 		<table>
@@ -29,8 +32,8 @@
 		<div class="span7 text-center"> 
 			<div class="btn-group">
 				<a><button class="btn btn-info" ng-click="gameCtrl.rematch(true)" ng-show="true" > Rematch!</button></a>
-				<a href="#/"><button class="btn btn-info" ng-click="gameCtrl.debug()" ng-show="true"> Go Back!</button></a>
-				<a><button class="btn btn-info" ng-click="gameCtrl.rematch(false)" ng-show="true"> Debug!</button></a>
+				<a href="#/"><button class="btn btn-info" ng-click="gameCtrl.rematch(false)" ng-show="true"> Go Back!</button></a>
+				<a><button class="btn btn-info" ng-click="gameCtrl.debug()" ng-show="true"> Debug!</button></a>
 			</div>
 		</div>
 		<div>
