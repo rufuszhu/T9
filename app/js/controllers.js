@@ -276,7 +276,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	this.bigPad = pad;
 	$scope.turn_1 = true;
 	this.winnerDeclared = false;
-	this.winnerIs;
+	$scope.winnerIs;
 	
 	$scope.resetAll = function(){
 		for(var boardRow=0; boardRow<3; boardRow++){
@@ -345,12 +345,12 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 		//check win
 		if ($scope.tttData.winnerIs === 'P1'){
 			//alert("From AngularFire: Player 1 is the winner!");
-			this.winnerIs = 1;
+			$scope.winnerIs = 1;
 			$scope.tttData.$unbind();
 		}
 		else if ($scope.tttData.winnerIs === 'P2'){
 			//alert("From AngularFire: Player 2 is the winner!");
-			this.winnerIs = 1;
+			$scope.winnerIs = 1;
 			$scope.tttData.$unbind();
 		}
 		//turn = ($scope.tttData.turn ===0)? true : false; 
@@ -470,13 +470,13 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			if (result===1){
 				//alert("Player 1 wins!");
 				this.winnerDeclared = true;
-				this.winnerIs =1;
+				$scope.winnerIs =1;
 				$scope.tttData.$update({winnerDeclared: true, winnerIs: 'P1'});
 			}
 			else if (result===-1){
 				//alert("Player 2 wins!");
 				this.winnerDeclared = true;
-				this.winnerIs =2;
+				$scope.winnerIs =2;
 				$scope.tttData.$update({winnerIs: 'P2'});
 				$scope.tttData.$update({winnerDeclared: true});
 			}
