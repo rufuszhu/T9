@@ -153,8 +153,11 @@ app.controller('gameController', function(){
 			}
 			
 			//var result = this.checkWin(pad);
-			var localResult = this.checkWin(this.board[row_p][col_p]);
-			this.bigPad[row_p][col_p].ownBy = localResult;
+			if(this.board[row_p][col_p][0][0].localWinner ==0){
+				var localResult = this.checkWin(this.board[row_p][col_p]);
+				this.bigPad[row_p][col_p].ownBy = localResult;
+				this.board[row_p][col_p][0][0].localWinner = localResult;
+			}
 			var result = this.checkWin(this.bigPad);
 			if (result===1){
 				//alert("Player 1 wins!");
@@ -170,10 +173,13 @@ app.controller('gameController', function(){
 			}
 		}
 	};
-        
+    this.checkLocalPadWinner = function(pad){
+		//console.log(pad[0][0].localWinner);
+		return pad[0][0].localWinner;
+	}
 	this.checkWin = function(unit){
 		var sum = 0;
-		
+		//if (this.checkLocalPadWinner(unit))
 		//check rows		
 		for (var i = 0; i < 3; i++){
 			sum = unit[i][0].ownBy+unit[i][1].ownBy+unit[i][2].ownBy;
@@ -230,6 +236,7 @@ app.controller('gameController', function(){
 						}
 					}
 					this.bigPad[boardRow][boardCol].ownBy = 0;
+					this.board[boardRow][boardCol][0][0].localWinner = 0;
 				}
 			}
 			this.winnerDeclared = false;
@@ -267,7 +274,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	//$window.close();
 	this.board  = board;
 	this.bigPad = pad;
-	this.turn_1 = true;
+	$scope.turn_1 = true;
 	this.winnerDeclared = false;
 	this.winnerIs;
 	
@@ -329,7 +336,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	//$scope.tttData.$save("gameStatus");
 	
 	//$scope.tttData.$update({gameStatus: 'true'});
-	
+	var turn = $scope.turn_1;
 	$scope.tttData.$on('change', function(){
 
 		$scope.updateActivePad();
@@ -337,19 +344,26 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 		//check dead case OK
 		//check win
 		if ($scope.tttData.winnerIs === 'P1'){
-			alert("From AngularFire: Player 1 is the winner!");
+			//alert("From AngularFire: Player 1 is the winner!");
+			this.winnerIs = 1;
 			$scope.tttData.$unbind();
 		}
 		else if ($scope.tttData.winnerIs === 'P2'){
-			alert("From AngularFire: Player 2 is the winner!");
+			//alert("From AngularFire: Player 2 is the winner!");
+			this.winnerIs = 1;
 			$scope.tttData.$unbind();
 		}
+		//turn = ($scope.tttData.turn ===0)? true : false; 
+		if ($scope.tttData.turn ==0){
+			$scope.turn_1 = true;
+		}
+		if ($scope.tttData.turn ==1){
+			$scope.turn_1 = false;
+		}
 	});
+	//$scope.turn_1 = turn;
 	
-	
-	var checkColor = function(){
-		alert("asdwsd");
-	}
+
     this.isOccupy = function(cell){
         if (cell.ownBy===0)
 			{return false;}
@@ -405,12 +419,15 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 		//alert(cellCount);
 		return cellCount==9? 1:0; 
 	};
-	
+	this.checkLocalPadWinner = function(row, col){
+		//alert(row.toString() + " and "+col.toString());
+		return $scope.tttData.gameboard[row][col][0][0].localWinner;
+	}
 	
     this.cellOnClick = function(pad, row, col, row_p, col_p){
 		if(this.playable(pad) && !(this.isWinnerDeclared())){
 			console.log("player: " + player);
-			//console.log(this.turn_1);
+			//console.log($scope.turn_1);
 			console.log("turn: " + $scope.tttData.turn);
 			//Setting ownership
 			if (this.isOccupy(pad[row][col])){
@@ -419,18 +436,17 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 				if($scope.tttData.turn === 0 && player===0){
 					pad[row][col].Symbol="X";
 					pad[row][col].ownBy=1;
-					this.turn_1=false;
+					$scope.turn_1=false;
 					$scope.tttData.turn =1;
 					$scope.tttData.gameboard[row_p][col_p][row][col].ownBy=1;
 					this.changePadPlayable(pad, row, col);
 					$scope.tttData.$save("gameboard").then(function(){});
 					$scope.tttData.$save("turn");
-					
-					//$scope.tttData.$update({name: 'alex'}).then(function(result){});
+
 				}else if ($scope.tttData.turn === 1 && player=== 1){
 					pad[row][col].Symbol="O";
 					pad[row][col].ownBy=-1;
-					this.turn_1=true;
+					$scope.turn_1=true;
 					$scope.tttData.turn =0;
 					$scope.tttData.gameboard[row_p][col_p][row][col].ownBy=-1;
 					this.changePadPlayable(pad, row, col);
@@ -441,24 +457,26 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 				}
 				//this.changePadPlayable(pad, row, col);
 			}
-			
-			//var result = this.checkWin(pad);
+            //if($scope.tttData.gameboard[row_p][col_p][0][0].localWinner == 0){
 			var localResult = this.checkWin(pad);
-			this.bigPad[row_p][col_p].ownBy = localResult;
+			//alert($scope.tttData.gameboard[row_p][col_p][0][0].localWinner);
+			if($scope.tttData.gameboard[row_p][col_p][0][0].localWinner == 0){
+				this.bigPad[row_p][col_p].ownBy = localResult;
+				this.board[row_p][col_p][0][0].localWinner = localResult;
+				$scope.tttData.gameboard[row_p][col_p][0][0].localWinner=localResult;
+				$scope.tttData.$save("gameboard");
+			}
 			var result = this.checkWin(this.bigPad);
 			if (result===1){
 				//alert("Player 1 wins!");
 				this.winnerDeclared = true;
 				this.winnerIs =1;
-				//$scope.tttData.winnerDeclared = true;
-				//$scope.tttData.$update({winnerIs: 'P1'});
 				$scope.tttData.$update({winnerDeclared: true, winnerIs: 'P1'});
 			}
 			else if (result===-1){
 				//alert("Player 2 wins!");
 				this.winnerDeclared = true;
 				this.winnerIs =2;
-				//$scope.tttData.winnerDeclared = true;
 				$scope.tttData.$update({winnerIs: 'P2'});
 				$scope.tttData.$update({winnerDeclared: true});
 			}
@@ -469,6 +487,10 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 		}
 	};
         
+	this.checkPadWin = function (unit){
+		
+	};
+	
 	this.checkWin = function(unit){
 		var sum = 0;
 		
@@ -517,6 +539,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 				for(var boardCol=0; boardCol<3; boardCol++){			
 					board[boardRow][boardCol][0][0].padActive = 1;
 					$scope.tttData.gameboard[boardRow][boardCol][0][0].padActive=1;
+					$scope.tttData.gameboard[boardRow][boardCol][0][0].localWinner=0;
 					for(var cellRow=0; cellRow<3; cellRow++){
 						for(var cellCol=0; cellCol<3; cellCol++){
 							board[boardRow][boardCol][cellRow][cellCol].ownBy = 0;
@@ -528,7 +551,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			$scope.tttData.winnerDeclared= false;
 			$scope.tttData.$save('winnerDeclared');
 			$scope.tttData.$save('gameboard');
-			$scope.tttData.$update({turn:0});
+			$scope.tttData.$update({turn:0, winnerIs: ""});
 		}
 	};
 	
@@ -794,7 +817,7 @@ app.controller('onlineController', function(){
 
 {var pad = [
 	[
-		{row:"0", col:"0", ownBy:0, Symbol:"E", padActive:1},  // we actually only need the padActive attribute for this array element to determine the activeness of a board 
+		{row:"0", col:"0", ownBy:0, Symbol:"E", padActive:1, localWinner:0},  // we actually only need the padActive attribute for this array element to determine the activeness of a board 
 		{row:"0", col:"1", ownBy:0, Symbol:"E", padActive:1},
 		{row:"0", col:"2", ownBy:0, Symbol:"E", padActive:1}
 	],

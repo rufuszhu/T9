@@ -12,7 +12,7 @@
 			<tr ng-repeat="board_r in gameCtrl.board">
 				<td ng-repeat="pad in board_r" class="td-pad">
 					<div ng-class="{playable: gameCtrl.playable(pad)===1, notplayable: gameCtrl.playable(pad)===0}">
-						<table ng-class="{p1: gameCtrl.checkWin(pad)===1, p2: gameCtrl.checkWin(pad)===-1 }">
+						<table ng-class="{p1: gameCtrl.checkLocalPadWinner(pad)===1, p2: gameCtrl.checkLocalPadWinner(pad)===-1 }">
 							<tr ng-repeat="row in pad">	
 								<td ng-repeat="cell in row" class="td-cell">
 									<div class="div-cell" 
