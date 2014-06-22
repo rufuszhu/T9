@@ -109,6 +109,7 @@ div.bar-status h2{
 	vertical-align: middle;
 	position: relative;
 	top: -20%;
+	color: #CB5198;
 }
 
 div.player2bar{
@@ -131,6 +132,10 @@ div.player2bar.shrink{
 	width: 5%;
 }
 
+.btn-group button{
+	width:120px;
+	margin-top:15px;
+}
 #splashheader {
  //font-family: "Galindo";
 // font-family: 'Dosis', sans-serif;
@@ -156,11 +161,14 @@ div.player2bar.shrink{
 	opacity:1.0;
 }
 
-.page-container .btn-group> a:hover{
-	margin-right: 20px;
-	margin-left: 20px;
-	
+.page-container .btn-group a:hover{
+	//margin-right: 20px;
+	//margin-left: 20px;
 }
+.btn-info:hover{
+	background-color: IndianRed ;
+}
+
 
 #buttonsdiv, .page-container .btn-group{
 	margin-top:20px;
