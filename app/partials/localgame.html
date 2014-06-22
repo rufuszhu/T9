@@ -1,5 +1,6 @@
  <div class="page-container" ng-controller="gameController as gameCtrl" disabled="true";>
-		<section class="statusbar"> 
+	<div class="row text-center localgamediv">
+		<section class="navbar navbar-fixed-top statusbar"> 
 			<div class="player1bar" ng-class="{slide: gameCtrl.turn_1 ===true , shrink: gameCtrl.turn_1 ===false }" ng-hide="gameCtrl.isWinnerDeclared()"></div>
 			<div class="bar-status"  ng-class="{win: gameCtrl.isWinnerDeclared()===true}">
 				<h3 ng-show="false">Game Started!</h3>
@@ -29,7 +30,7 @@
 				</td>
 			</tr>
 		</table>
-		<div class="span7 text-center"> 
+		<div class=""> 
 			<div class="btn-group">
 				<a><button class="btn btn-info" ng-click="gameCtrl.rematch(true)" ng-show="true" > Rematch!</button></a>
 				<a href="#/"><button class="btn btn-info" ng-click="gameCtrl.rematch(false)" ng-show="true"> Go Back!</button></a>
@@ -39,4 +40,5 @@
 		<div>
 			<a href="#/splash" ng-click="gameCtrl.rematch(false)" ng-show="false">Go Back To Main Page</a>
 		</div>
-    </div>
+	</div>
+</div>

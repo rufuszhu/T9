@@ -1,41 +1,40 @@
  <div class="page-container" ng-controller="friendgameController as friendgameCtrl" disabled="true";>
-	<section class="statusbar"> 
-		<div class="player1bar" ng-class="{slide: turn_1 ===true , shrink: turn_1 ===false }" ng-hide="friendgameCtrl.isWinnerDeclared()"></div>
-		<div class="bar-status"  ng-class="{win: friendgameCtrl.isWinnerDeclared()===true}">
-			<h3 ng-show="false">Game Started!</h3>
-			<h2 ng-show="friendgameCtrl.isWinnerDeclared()">Player {{winnerIs}} is the winner!</h2>
+	<div class="row text-center friendgamediv">
+		<section class="navbar navbar-fixed-top statusbar"> 
+			<div class="player1bar" ng-class="{slide: turn_1 ===true , shrink: turn_1 ===false }" ng-hide="friendgameCtrl.isWinnerDeclared()"></div>
+			<div class="bar-status"  ng-class="{win: friendgameCtrl.isWinnerDeclared()===true}">
+				<h3 ng-show="false">Game Started!</h3>
+				<h2 ng-show="friendgameCtrl.isWinnerDeclared()">Player {{winnerIs}} is the winner!</h2>
+			</div>
+			<div class="player2bar" ng-class="{slide: turn_1 ===false, shrink: turn_1 ===true }" ng-hide="friendgameCtrl.isWinnerDeclared()"></div>
+		</section>
+		<h3>Friend Mode</h3>
+		<table>
+			<tr ng-repeat="board_r in friendgameCtrl.board">
+				<td ng-repeat="pad in board_r" class="td-pad">
+					<div ng-class="{playable: friendgameCtrl.playable(pad)===1, notplayable: friendgameCtrl.playable(pad)===0}">
+						<table ng-class="{p1: friendgameCtrl.checkLocalPadWinner($parent.$index, $index)===1, p2: friendgameCtrl.checkLocalPadWinner($parent.$index, $index)===-1 }">
+							<tr ng-repeat="row in pad">	
+								<td ng-repeat="cell in row" class="td-cell">
+									<div class="div-cell" 
+										ng-class="{dark:hover && cell.ownBy===0 && friendgameCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
+										ng-mouseenter="hover = true" 
+										ng-mouseleave="hover = false"
+										ng-click="friendgameCtrl.cellOnClick(pad, cell.row, cell.col, 
+												  $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div> 
+			<div class="btn-group">
+				<a><button class="btn btn-info" ng-click="rematch()" ng-show="true"> Rematch!</button></a>
+				<a href="#/"><button class="btn btn-info" ng-click="quit()" ng-show="true"> Go Back!</button></a>
+			</div>
 		</div>
-		<div class="player2bar" ng-class="{slide: turn_1 ===false, shrink: turn_1 ===true }" ng-hide="friendgameCtrl.isWinnerDeclared()"></div>
-	</section>
-	<h3>Friend Mode</h3>
-	<table>
-		<tr ng-repeat="board_r in friendgameCtrl.board">
-			<td ng-repeat="pad in board_r" class="td-pad">
-				<div ng-class="{playable: friendgameCtrl.playable(pad)===1, notplayable: friendgameCtrl.playable(pad)===0}">
-					<table ng-class="{p1: friendgameCtrl.checkLocalPadWinner($parent.$index, $index)===1, p2: friendgameCtrl.checkLocalPadWinner($parent.$index, $index)===-1 }">
-						<tr ng-repeat="row in pad">	
-							<td ng-repeat="cell in row" class="td-cell">
-								<div class="div-cell" 
-									ng-class="{dark:hover && cell.ownBy===0 && friendgameCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
-									ng-mouseenter="hover = true" 
-									ng-mouseleave="hover = false"
-									ng-click="friendgameCtrl.cellOnClick(pad, cell.row, cell.col, 
-											  $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</td>
-		</tr>
-	</table>
-	<div class="span7 text-center"> 
-		<div class="btn-group">
-			<a><button class="btn btn-info" ng-click="rematch()" ng-show="true"> Rematch!</button></a>
-			<a href="#/"><button class="btn btn-info" ng-click="quit()" ng-show="true"> Go Back!</button></a>
-		</div>
-	</div>
-	<div>
-		<a href="#/splash" ng-show="false">Go Back To Main Page</a>
 	</div>
 </div>
