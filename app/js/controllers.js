@@ -30,9 +30,9 @@ app.config(function ($routeProvider){
 			controller: 'splashController',
 			templateUrl: 'partials/splash.html'
 		})
-		.when('/online',
+		.when('/online/:gameId',
 		{
-			controller: '',
+			controller: 'friendgameController',
 			templateUrl: 'partials/onlinegame.html'
 		})
 		.when('/friend/:gameId',
@@ -265,6 +265,12 @@ app.controller('splashController', function($scope, $location, $window){
 		$location.path( "/friend/" + Math.floor(Math.random() * 99999).toString());
 	};
 	
+	$scope.newOnlineGame = function(){
+		console.log('Creating new online game');
+		//alert(Math.floor(Math.random() * 99999).toString());
+		$location.path( "/random/" + Math.floor(Math.random() * 99999).toString());
+	};
+	
 	$window.onbeforeunload  = function(){
 		
 	};
@@ -277,6 +283,8 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	$scope.turn_1 = true;
 	this.winnerDeclared = false;
 	$scope.winnerIs;
+	//alert($routeParams.gameId); //this will alert gameId
+	//alert($location.absUrl());  //this will alert absolute URL of the site in the browser address bar
 	
 	$scope.resetAll = function(){
 		for(var boardRow=0; boardRow<3; boardRow++){
@@ -293,9 +301,8 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 		}
 	};
 	
-	//alert($routeParams.gameId); //this will alert gameId
-	//alert($location.absUrl());  //this will alert absolute URL of the site in the browser address bar
 	
+		
 	fbURL = fbURL + '/friendgames' + '/' +$routeParams.gameId;
 	$scope.tttData = $firebase(new Firebase(fbURL));
 	
@@ -309,6 +316,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			player = 1; // 1 is P2
 			//alert(player);
 			$scope.tttData.$update({gameStatus: 'started'});
+			
 		}
 		else if (snapshot.val()==="started"){
 			player = 2; // 2 is a spectator
@@ -317,6 +325,7 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 			player = 0  // 0 is P1
 			//alert(player);
 			$scope.tttData.$update({gameStatus: 'pending'});
+			
 		}
 		
 	});
@@ -363,7 +372,29 @@ app.controller('friendgameController', function($scope, fbURL, $firebase, $locat
 	});
 	//$scope.turn_1 = turn;
 	
-
+	$scope.isGameStarted = function(){
+		var gameInit = new Firebase(fbURL+"/gameStatus");
+		console.log(gameInit.value());
+		gameInit.once('value', function(snapshot) {
+		if(snapshot.val()==="pending" ){
+			//alert("pend");
+			// Game is pending, wait for player 2
+			return 0;
+		}
+		else if (snapshot.val()==="started"){
+			//game started
+			return 1;
+		} else{
+			//other case: maybe left the game
+			console.log(snapshot.val());
+			console.log("A player has left the game!");
+			return 0;
+		}
+		
+	});
+	};
+	
+	
     this.isOccupy = function(cell){
         if (cell.ownBy===0)
 			{return false;}

@@ -40,39 +40,7 @@
 	<!--<script src="http://fgnass.github.io/spin.js/spin.min.js"></script>-->
 </head>
 <body ng-controller="splashController as splashCtrl">
-	<div ng-view="ng-view">
-	</div>
-	
-    <!--
-    <div class="page-container" disabled="true";>
-		<table ng-controller="gameController as gameCtrl">
-			<tr ng-repeat="board_r in gameCtrl.board">
-				<td ng-repeat="pad in board_r" class="td-pad">
-					<div ng-class="{playable: gameCtrl.playable(pad)===1, notplayable: gameCtrl.playable(pad)===0}">
-						<table ng-class="{p1: gameCtrl.checkWin(pad)===1, p2: gameCtrl.checkWin(pad)===-1 }">
-							<tr ng-repeat="row in pad">	
-								<td ng-repeat="cell in row" class="td-cell">
-									<div class="div-cell" 
-										ng-class="{dark:hover && cell.ownBy===0 && gameCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
-										ng-mouseenter="hover = true" 
-										ng-mouseleave="hover = false"
-										ng-click="gameCtrl.cellOnClick(pad, cell.row, cell.col, 
-												  $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
-									</div>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</td>
-			</tr>
-		</table>
-		<div ng-controller="gameController as gameCtrl"> 
-			
-				<button class="btn btn-info" ng-click="gameCtrl.rematch()" ng-show="true" style="margin-left: 46%;"> Rematch! </button>
-			
-		</div>
-    </div>
-	-->
+	<div ng-view="ng-view"></div>
 	
 	<script src="js/app.js"></script>
 	<script src="js/services.js"></script>
