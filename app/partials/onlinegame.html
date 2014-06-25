@@ -1,18 +1,26 @@
- <div class="page-container" ng-controller="onlineController as onlineCtrl" disabled="true";>
-	<div class="row text-center onlinegamediv">
-		<h1>Online Mode</h1>
+ <div class="page-container" ng-controller="onlineController as onlinegameCtrl" disabled="true";>
+	<div class="row text-center friendgamediv">
+		<section class="navbar navbar-fixed-top statusbar"> 
+			<div class="player1bar" ng-class="{slide: turn_1 ===true , shrink: turn_1 ===false }" ng-hide="onlinegameCtrl.isWinnerDeclared()"></div>
+			<div class="bar-status"  ng-class="{win: onlinegameCtrl.isWinnerDeclared()===true}">
+				<h3 ng-show="false">Game Started!</h3>
+				<h2 ng-show="onlinegameCtrl.isWinnerDeclared()">Player {{winnerIs}} is the winner!</h2>
+			</div>
+			<div class="player2bar" ng-class="{slide: turn_1 ===false, shrink: turn_1 ===true }" ng-hide="onlinegameCtrl.isWinnerDeclared()"></div>
+		</section>
+		<h3>Friend Mode</h3>
 		<table>
-			<tr ng-repeat="board_r in onlineCtrl.board">
+			<tr ng-repeat="board_r in onlinegameCtrl.board">
 				<td ng-repeat="pad in board_r" class="td-pad">
-					<div ng-class="{playable: onlineCtrl.playable(pad)===1, notplayable: onlineCtrl.playable(pad)===0}">
-						<table ng-class="{p1: onlineCtrl.checkWin(pad)===1, p2: onlineCtrl.checkWin(pad)===-1 }">
+					<div ng-class="{playable: onlinegameCtrl.playable(pad)===1, notplayable: onlinegameCtrl.playable(pad)===0}">
+						<table ng-class="{p1: onlinegameCtrl.checkLocalPadWinner($parent.$index, $index)===1, p2: onlinegameCtrl.checkLocalPadWinner($parent.$index, $index)===-1 }">
 							<tr ng-repeat="row in pad">	
 								<td ng-repeat="cell in row" class="td-cell">
 									<div class="div-cell" 
-										ng-class="{dark:hover && cell.ownBy===0 && onlineCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
+										ng-class="{dark:hover && cell.ownBy===0 && onlinegameCtrl.playable(pad)===1, ownByOne:cell.ownBy===1, ownByTwo:cell.ownBy===-1}"
 										ng-mouseenter="hover = true" 
 										ng-mouseleave="hover = false"
-										ng-click="onlineCtrl.cellOnClick(cell.row, cell.col, 
+										ng-click="onlinegameCtrl.cellOnClick(pad, cell.row, cell.col, 
 												  $parent.$parent.$parent.$index, $parent.$parent.$index)">                                                        
 									</div>
 								</td>
@@ -24,16 +32,9 @@
 		</table>
 		<div class="row"> 
 			<div class="btn-group">
-				<div class="span2"><button class="btn btn-info" ng-click="onlineCtrl.rematch(true)" ng-show="true"> Rematch!</button></div>
+				<div class="span2"><a><button class="btn btn-info" ng-click="rematch()" ng-show="true"> Rematch!</button></a></div>
 				<div class="span2"><a href="#/"><button class="btn btn-info" ng-click="quit()" ng-show="true"> Go Back!</button></a></div>
-				<!--<div class="span2"><button class="btn btn-info" ng-click="onlineCtrl.debug()" ng-show="true" style="margin-left: 46%;"> Debug!</button></div>-->
 			</div>
-		</div>
-		<div>
-			<a href="#/splash" ng-click="onlineCtrl.rematch(false)" ng-show="false">Go Back To Main Page</a>
 		</div>
 	</div>
 </div>
-
-	
-	
